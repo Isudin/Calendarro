@@ -13,9 +13,73 @@ a {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    margin-left: 70px;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-color: lightslategray;
+    border-radius: 5px;
+    background-color: lightslategray;
+    font-size: 20px;
+    color: white;
+}
+
+.window {
+    background-color: dimgray;
+    vertical-align: central;
+    margin-top: 100px;
+    margin-left: 380px;
+    margin-right: 380px;
+    padding-bottom: 60px;
+    border-color: lightslategrey;
+    border-style: solid;
+    border-width: 5px;
+}
+
+.label {
+    font-size: 30px;
+    color: white;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.form-control {
+    width: 80%;
+    margin-top: 30px;
+    margin-left: 30px;
+    height: 35px;
+}
+
+.checkbox {
+    margin-left: 85px;
+}
+
+hr {
+    border: none;
+    height: 5px;
+    background-color: lightslategrey;
+    width: 95%;
+    border-radius: 10px;
+}
+
+.register {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.forgotpw {
+    font-size: 15px;
+    text-align: center;
+}
+
+.forgotpw a:link{
+    color: white;
+}
+
+a:link, a:hover {
+    color: white;
+    text-decoration: none;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
