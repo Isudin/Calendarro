@@ -9,8 +9,9 @@ namespace Calendarro.Models.ContentBase
     {
         public Project()
         {
+            Kanbans = new HashSet<Kanban>();
+            ProjectTasks = new HashSet<ProjectTask>();
             ProjectUserRelations = new HashSet<ProjectUserRelation>();
-            Tasks = new HashSet<Task>();
         }
 
         public int ProjectId { get; set; }
@@ -19,10 +20,10 @@ namespace Calendarro.Models.ContentBase
         public int CreatorId { get; set; }
         public DateTime? FinishingDate { get; set; }
         public string Description { get; set; }
-        public int HasTasks { get; set; }
 
         public virtual User Creator { get; set; }
+        public virtual ICollection<Kanban> Kanbans { get; set; }
+        public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
         public virtual ICollection<ProjectUserRelation> ProjectUserRelations { get; set; }
-        public virtual ICollection<Task> Tasks { get; set; }
     }
 }
