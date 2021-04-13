@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Calendarro.Models;
 using Microsoft.AspNetCore.Authorization;
+using Calendarro.Models.ContentBase;
 
 namespace Calendarro.Controllers
 {
