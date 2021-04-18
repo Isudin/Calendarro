@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Calendarro.Models;
 using Microsoft.AspNetCore.Authorization;
-using Calendarro.Models.ContentBase;
+using Calendarro.Models.Database;
 
 namespace Calendarro.Controllers
 {
@@ -47,7 +47,7 @@ namespace Calendarro.Controllers
             var relation = new ProjectUserRelation()
             {
                 UserId = userId,
-                
+
             };
             return View();
         }
@@ -57,13 +57,13 @@ namespace Calendarro.Controllers
             ///TODO
             ///Add creatorID, 
             ///Save data to db
-            var project = new Project()
+            var project = new Projects()
             {
                 CreateDate = DateTime.Now,
                 Description = description,
                 ProjectName = name,
                 FinishingDate = finishingDate,
-                
+
             };
             return View();
         }
@@ -73,10 +73,10 @@ namespace Calendarro.Controllers
             ///TODO
             ///Add projectID, 
             ///Save data to db
-            var kanban = new Kanban()
+            var kanban = new Kanbans()
             {
                 Name = name,
-                
+
             };
             return View();
         }
@@ -86,13 +86,13 @@ namespace Calendarro.Controllers
             ///TODO
             ///Add kanbanID, 
             ///Save data to db
-            var task = new ProjectTask()
+            var task = new ProjectTasks()
             {
                 CreateDate = DateTime.Now,
                 TaskName = name,
                 FinishDate = finishDate,
                 UserId = userId,
-                
+
             };
             return View();
         }

@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Calendarro.Models.ContentBase;
+using Calendarro.Areas.Identity.Data;
+using Calendarro.Models.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,13 @@ namespace Calendarro
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Identity
+            services.AddDbContext<CalendarroDBContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("Calendarro")));
+
+            services.AddDefaultIdentity<CalendarroUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<CalendarroDBContext>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

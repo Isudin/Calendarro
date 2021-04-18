@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Calendarro.Areas.Identity.Data
 {
-    // Add profile data for application users by adding properties to the CalendarroUser class
     public class CalendarroUser : IdentityUser
     {
     }
