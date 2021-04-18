@@ -53,26 +53,26 @@
 
     @*<div class="col-md-6 col-md-offset-2">
         <section>
-            <h4>Use another service to log in.</h4>
+            <h4>use another service to log in.</h4>
             <hr />
             @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                if ((model.externallogins?.count ?? 0) == 0)
                 {
                     <div>
                         <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
+                            there are no external authentication services configured. see <a href="https://go.microsoft.com/fwlink/?linkid=532715">this article</a>
+                            for details on setting up this asp.net application to support logging in via external services.
                         </p>
                     </div>
                 }
                 else
                 {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <form id="external-account" asp-page="./externallogin" asp-route-returnurl="@model.returnurl" method="post" class="form-horizontal">
                         <div>
                             <p>
-                                @foreach (var provider in Model.ExternalLogins)
+                                @foreach (var provider in model.externallogins)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.name" title="log in using your @provider.displayname account">@provider.displayname</button>
                                 }
                             </p>
                         </div>

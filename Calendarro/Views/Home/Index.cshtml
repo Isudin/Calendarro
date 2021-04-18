@@ -1,8 +1,46 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<head>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<body>
+    <div class="row">
+        <div class="column" style="border-right: 5px solid dimgray">
+            <div class="boards">
+                <div class="sqr">
+                    <div class="title">
+                        TODO
+                    </div>
+                    <div class="content"></div>
+                </div>
+                <div class="sqr">
+                    <div class="title">
+                        DONE
+                    </div>
+                    <div class="content"></div>
+                </div>
+                <div class="sqr">
+                    <div class="title">
+                        NOTES
+                    </div>
+                    <div class="content"></div>
+                </div>
+                <div class="sqr">
+                    <div class="title">
+                        IN PROGRESS
+                    </div>
+                    <div class="content"></div>
+                </div>
+            </div>
+        </div>
+        <div class="column" style="border-left: 5px solid dimgray">
+            <div class="calendar_buttons">
+                <div id="button1"><a href="#" class="btns">1</a></div>
+                <div id="button2"><a href="#" class="btns">3</a></div>
+                <div id="button3"><a href="#" class="btns">6</a></div>
+            </div>           
+        </div>
+    </div>
+</body>
