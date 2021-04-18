@@ -32,6 +32,7 @@ namespace Calendarro
             services.AddDefaultIdentity<CalendarroUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<CalendarroDBContext>();
 
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
