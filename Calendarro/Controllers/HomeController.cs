@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Calendarro.Models;
 using Microsoft.AspNetCore.Authorization;
-using Calendarro.Models.ContentBase;
+using Calendarro.Models.Database;
+using Microsoft.Data.SqlClient;
 
 namespace Calendarro.Controllers
 {
@@ -43,57 +44,60 @@ namespace Calendarro.Controllers
         {
             ///TODO
             ///Add projectID
-            ///Save data to db
             var relation = new ProjectUserRelation()
             {
                 UserId = userId,
-                
+
             };
+            _context.ProjectUserRelation.Add(relation);
+            await _context.SaveChangesAsync();
             return View();
         }
 
         public async Task<IActionResult> AddProjectAsync(string name, string description, DateTime finishingDate)
         {
             ///TODO
-            ///Add creatorID, 
-            ///Save data to db
-            var project = new Project()
+            ///Add creatorID
+            var project = new Projects()
             {
                 CreateDate = DateTime.Now,
                 Description = description,
                 ProjectName = name,
                 FinishingDate = finishingDate,
-                
+
             };
+            _context.Projects.Add(project);
+            await _context.SaveChangesAsync();
             return View();
         }
 
         public async Task<IActionResult> AddKanbanAsync(string name)
         {
             ///TODO
-            ///Add projectID, 
-            ///Save data to db
-            var kanban = new Kanban()
+            ///Add projectID
+            var kanban = new Kanbans()
             {
                 Name = name,
-                
             };
+            _context.Kanbans.Add(kanban);
+            await _context.SaveChangesAsync();
             return View();
         }
 
         public async Task<IActionResult> AddTaskAsync(int userId, string name, DateTime finishDate)
         {
             ///TODO
-            ///Add kanbanID, 
-            ///Save data to db
-            var task = new ProjectTask()
+            ///Add kanbanID
+            var task = new ProjectTasks()
             {
                 CreateDate = DateTime.Now,
                 TaskName = name,
                 FinishDate = finishDate,
                 UserId = userId,
-                
+
             };
+            _context.ProjectTasks.Add(task);
+            await _context.SaveChangesAsync();
             return View();
         }
     }

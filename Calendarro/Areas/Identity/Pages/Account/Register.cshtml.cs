@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Calendarro.Models.Database;
 
 namespace Calendarro.Areas.Identity.Pages.Account
 {
@@ -24,17 +25,20 @@ namespace Calendarro.Areas.Identity.Pages.Account
         private readonly UserManager<CalendarroUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly CalendarroDBContext _calendarroContext;
 
         public RegisterModel(
             UserManager<CalendarroUser> userManager,
             SignInManager<CalendarroUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            CalendarroDBContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _calendarroContext = context;
         }
 
         [BindProperty]
@@ -52,14 +56,47 @@ namespace Calendarro.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Imię")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Nazwisko")]
+            public string LastName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Miasto")]
+            public string City { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Ulica")]
+            public string Street { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Numer domu")]
+            public string HouseNumber { get; set; }
+
+            [DataType(DataType.PhoneNumber)]
+            [Display(Name = "Numer telefonu")]
+            public string PhoneNumber { get; set; }
+
+            [DataType(DataType.MultilineText)]
+            [Display(Name = "Opis")]
+            public string Description { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "Hasło musi mieć przynajmniej {2}.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Hasło")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Potwierz hasło")]
+            [Compare("Password", ErrorMessage = "Proszę podać takie samo hasło.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -72,11 +109,39 @@ namespace Calendarro.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
-                var user = new CalendarroUser { UserName = Input.Email, Email = Input.Email };
+                var user = new CalendarroUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email
+                };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+                if (result.Succeeded)
+                {
+                    var calUser = new CalendarroUsers
+                    {
+                        Token = user.Id,
+                        CreateDate = DateTime.Now,
+                        City = Input.City,
+                        Description = Input.Description,
+                        EMail = Input.Email,
+                        Name = Input.FirstName,
+                        HouseNumber = Input.HouseNumber,
+                        PhoneNumber = Input.PhoneNumber,
+                        SurName = Input.LastName,
+                        Street = Input.Street
+                    };
+
+                    await _calendarroContext.CalendarroUsers.AddAsync(calUser);
+                    await _calendarroContext.SaveChangesAsync();
+                }
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
