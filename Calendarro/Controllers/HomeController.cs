@@ -9,6 +9,7 @@ using Calendarro.Models;
 using Microsoft.AspNetCore.Authorization;
 using Calendarro.Models.Database;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Http;
 
 namespace Calendarro.Controllers
 {
@@ -42,12 +43,10 @@ namespace Calendarro.Controllers
 
         public async Task<IActionResult> AddUserToProjectAsync(int userId)
         {
-            ///TODO
-            ///Add projectID
             var relation = new ProjectUserRelation()
             {
                 UserId = userId,
-
+                ProjectId = HttpContext.Session.GetInt32("ProjectId").Value
             };
             _context.ProjectUserRelation.Add(relation);
             await _context.SaveChangesAsync();
@@ -56,14 +55,13 @@ namespace Calendarro.Controllers
 
         public async Task<IActionResult> AddProjectAsync(string name, string description, DateTime finishingDate)
         {
-            ///TODO
-            ///Add creatorID
             var project = new Projects()
             {
                 CreateDate = DateTime.Now,
                 Description = description,
                 ProjectName = name,
                 FinishingDate = finishingDate,
+                ProjectId = HttpContext.Session.GetInt32("CreatorId").Value
 
             };
             _context.Projects.Add(project);
@@ -73,11 +71,10 @@ namespace Calendarro.Controllers
 
         public async Task<IActionResult> AddKanbanAsync(string name)
         {
-            ///TODO
-            ///Add projectID
             var kanban = new Kanbans()
             {
                 Name = name,
+                ProjectId = HttpContext.Session.GetInt32("ProjectId").Value
             };
             _context.Kanbans.Add(kanban);
             await _context.SaveChangesAsync();
@@ -86,15 +83,13 @@ namespace Calendarro.Controllers
 
         public async Task<IActionResult> AddTaskAsync(int userId, string name, DateTime finishDate)
         {
-            ///TODO
-            ///Add kanbanID
             var task = new ProjectTasks()
             {
                 CreateDate = DateTime.Now,
                 TaskName = name,
                 FinishDate = finishDate,
                 UserId = userId,
-
+                ProjectId = HttpContext.Session.GetInt32("KanbanId").Value
             };
             _context.ProjectTasks.Add(task);
             await _context.SaveChangesAsync();
