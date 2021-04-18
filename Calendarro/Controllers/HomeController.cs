@@ -11,17 +11,17 @@ using Calendarro.Models.ContentBase;
 
 namespace Calendarro.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly CalendarroDBContext _context;
+        //private readonly CalendarroDBContext _context;
 
-        public HomeController(ILogger<HomeController> logger, CalendarroDBContext context)
-        {
-            _logger = logger;
-            _context = context;
-        }
+        //public HomeController(ILogger<HomeController> logger, CalendarroDBContext context)
+        //{
+        //    _logger = logger;
+        //    _context = context;
+        //}
 
         public IActionResult Index()
         {
