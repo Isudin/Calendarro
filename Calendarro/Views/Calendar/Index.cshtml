@@ -10,17 +10,21 @@
 </div>
 
 @section Scripts{
+
     <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
     <script src="~/lib/fullcalendar/main.min.js"></script>
 
-    <script type="text/javascript">
+    <script>
+
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth'
+                initialView: 'dayGridMonth',
+                locale: 'pl'
             });
             calendar.render();
         });
+
     </script>
 
 }
