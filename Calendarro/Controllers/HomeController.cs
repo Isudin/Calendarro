@@ -27,6 +27,7 @@ namespace Calendarro.Controllers
 
         public IActionResult Index()
         {
+            var kanbans = PrepareCanbans();
             return View();
         }
 
@@ -94,6 +95,17 @@ namespace Calendarro.Controllers
             _context.ProjectTasks.Add(task);
             await _context.SaveChangesAsync();
             return View();
+        }
+
+        public List<Kanbans> PrepareCanbans()
+        {
+            var kanbansList = new List<Kanbans>();
+            foreach (var project in _context.Projects)
+                if (project.ProjectId == HttpContext.Session.GetInt32("ProjectId").Value)
+                    foreach (var kanban in _context.Kanbans)
+                        if (kanban.ProjectId == project.ProjectId)
+                            kanbansList.Add(kanban);
+            return kanbansList;
         }
     }
 }
