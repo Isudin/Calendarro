@@ -13,10 +13,11 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Calendarro.Areas.Identity.Data;
+using Newtonsoft.Json;
 
 namespace Calendarro.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -28,11 +29,19 @@ namespace Calendarro.Controllers
             _logger = logger;
             _context = context;
             _userManager = userManager;
+            SaveUserToSession(userManager);
+        }
+
+        private async Task SaveUserToSession(UserManager<CalendarroUser> userManager)
+        {
+            var user = await userManager.GetUserAsync(User);
+            var serializedUser = JsonConvert.SerializeObject(user);
+            HttpContext.Session.SetString("User", serializedUser);
         }
 
         public IActionResult Index()
         {
-            var kanbans = PrepareCanbans();
+            //var kanbans = PrepareCanbans();
             return View();
         }
 
@@ -108,12 +117,9 @@ namespace Calendarro.Controllers
         public List<Kanbans> PrepareCanbans()
         {
             var kanbansList = new List<Kanbans>();
-            foreach (var project in _context.Projects)
-                //if (project.ProjectId == HttpContext.Session.Get("ProjectId").GetValue)
-                if (project.ProjectId == HttpContext.Session.GetInt32("ProjectId").Value)
-                //if (project.ProjectId == HttpContext.Session.GetInt32("ProjectId").Value)
+            var currentProject = (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
                     foreach (var kanban in _context.Kanbans)
-                        if (kanban.ProjectId == project.ProjectId)
+                        if (kanban.ProjectId == currentProject.ProjectId)
                             kanbansList.Add(kanban);
             return kanbansList;
         }

@@ -38,7 +38,7 @@ namespace Calendarro
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            //services.addS
+            //services.AddSingleton();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

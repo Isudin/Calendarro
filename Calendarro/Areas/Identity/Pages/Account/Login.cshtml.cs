@@ -71,7 +71,7 @@ namespace Calendarro.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(UserManager<CalendarroUser> userManager, string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
@@ -83,7 +83,6 @@ namespace Calendarro.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    HttpContext.Session.SetString("Project", JsonConvert.SerializeObject(userManager.GetUserAsync(User).Result));
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
