@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using Calendarro.Models.Database;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using Calendarro.Areas.Identity.Data;
 
 namespace Calendarro.Controllers
 {
@@ -18,11 +21,13 @@ namespace Calendarro.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly CalendarroDBContext _context;
+        private UserManager<CalendarroUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, CalendarroDBContext context)
+        public HomeController(ILogger<HomeController> logger, CalendarroDBContext context, UserManager<CalendarroUser> userManager)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -62,7 +67,10 @@ namespace Calendarro.Controllers
                 Description = description,
                 ProjectName = name,
                 FinishingDate = finishingDate,
-                ProjectId = HttpContext.Session.GetInt32("CreatorId").Value
+                //CreatorId = _userManager.GetUserIdAsync().Result,
+                //CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                //CreatorId = _userManager.GetUserAsync(User).Result.Id
+                CreatorId = HttpContext.Session.GetInt32("CreatorId").Value
 
             };
             _context.Projects.Add(project);
@@ -101,7 +109,9 @@ namespace Calendarro.Controllers
         {
             var kanbansList = new List<Kanbans>();
             foreach (var project in _context.Projects)
+                //if (project.ProjectId == HttpContext.Session.Get("ProjectId").GetValue)
                 if (project.ProjectId == HttpContext.Session.GetInt32("ProjectId").Value)
+                //if (project.ProjectId == HttpContext.Session.GetInt32("ProjectId").Value)
                     foreach (var kanban in _context.Kanbans)
                         if (kanban.ProjectId == project.ProjectId)
                             kanbansList.Add(kanban);
