@@ -260,3 +260,52 @@ a.btns {
 .dropdown:hover .dropbtn {
     background-color: grey;
 }
+
+.button {
+    position: relative;
+    display: inline-block;
+    background-color: gray;
+    border: 5px solid dimgray;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.kanbandropbtn {
+    background-color: gray;
+    border: 5px solid dimgray;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    border: none;
+    font-weight: bold;
+    margin-right: 6px;
+}
+
+.kanbandrop-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 10px;
+    box-shadow: 0px 10px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+    .kanbandrop-content a {
+        color: black;
+        padding: 5px 7px;
+        text-decoration: none;
+        display: block;
+    }
+
+        .kanbandrop-content a:hover {
+            background-color: grey;
+        }
+
+    .dropdown:hover .kanbandrop-content {
+        display: block;
+    }
