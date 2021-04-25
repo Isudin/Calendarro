@@ -14,6 +14,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Calendarro.Areas.Identity.Data;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Calendarro.Controllers
 {
@@ -29,13 +30,14 @@ namespace Calendarro.Controllers
             _logger = logger;
             _context = context;
             _userManager = userManager;
-            SaveUserToSession(userManager);
+            SaveUserToSession().GetAwaiter();
         }
 
-        private async Task SaveUserToSession(UserManager<CalendarroUser> userManager)
+        private async Task SaveUserToSession()
         {
-            var user = await userManager.GetUserAsync(User);
-            var serializedUser = JsonConvert.SerializeObject(user);
+            var user = await _userManager.GetUserAsync(User);
+            var dbUser = _context.CalendarroUsers.SingleAsync(user => user.Token == user.UserId.ToString());
+            var serializedUser = JsonConvert.SerializeObject(dbUser);
             HttpContext.Session.SetString("User", serializedUser);
         }
 
@@ -70,20 +72,33 @@ namespace Calendarro.Controllers
 
         public async Task<IActionResult> AddProjectAsync(string name, string description, DateTime finishingDate)
         {
+            var serializedUser = HttpContext.Session.GetString("User");
+            var user = (CalendarroUsers)JsonConvert.DeserializeObject(serializedUser);
             var project = new Projects()
             {
                 CreateDate = DateTime.Now,
                 Description = description,
                 ProjectName = name,
                 FinishingDate = finishingDate,
-                //CreatorId = _userManager.GetUserIdAsync().Result,
-                //CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                //CreatorId = _userManager.GetUserAsync(User).Result.Id
-                CreatorId = HttpContext.Session.GetInt32("CreatorId").Value
-
+                CreatorId = user.UserId
             };
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
+            return View();
+        }
+
+        public IActionResult AddProjectAsync()
+        {
+            var serializedUser = HttpContext.Session.GetString("User");
+            var user = (CalendarroUsers)JsonConvert.DeserializeObject(serializedUser);
+            var project = new Projects()
+            {
+                CreateDate = DateTime.Now,
+                ProjectName = "Test name",
+                CreatorId = user.UserId
+            };
+            _context.Projects.Add(project);
+            _context.SaveChanges();
             return View();
         }
 
