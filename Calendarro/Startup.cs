@@ -65,7 +65,7 @@ namespace Calendarro
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Calendar}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
