@@ -44,6 +44,8 @@ namespace Calendarro.Controllers
         public IActionResult Index()
         {
             //var kanbans = PrepareCanbans();
+
+
             return View();
         }
 

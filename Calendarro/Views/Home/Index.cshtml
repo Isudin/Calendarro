@@ -68,7 +68,42 @@
                 <div id="button1"><a href="#" class="btns">1</a></div>
                 <div id="button2"><a href="#" class="btns">3</a></div>
                 <div id="button3"><a href="#" class="btns">6</a></div>
-            </div>           
+            </div>
+            <div class="container">
+                <div id="calendar"></div>
+            </div>
+
         </div>
     </div>
 </body>
+
+
+@section Scripts{
+    <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
+    <script src="~/lib/fullcalendar/main.min.js"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                timeZone: 'UTC',
+                themeSystem: 'bootstrap',
+                headerToolbar: {
+                    left: '',
+                    center: '',
+                    right: ''
+                },
+                weekNumbers: false,
+                firstDay: '1',
+                fixedWeekCount: false,
+                themeSystem: 'bootstrap',
+                dayMaxEvents: false, // allow "more" link when too many events
+                events: 'http://localhost:5000/calendar/getalltasks?project=1'
+            });
+
+            calendar.render();
+        });
+    </script>
+}
