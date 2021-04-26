@@ -1,5 +1,6 @@
 ﻿using Calendarro.Areas.Identity.Data;
 using Calendarro.Models.Database;
+using Calendarro.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,26 @@ namespace Calendarro.Controllers
             var test = await _userManager.GetUserAsync(User);
 
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddTaskAsync(AddNewTaskViewModel addNewTaskViewModel /*int userId, string name, DateTime finishDate*/)
+        {
+            var task = new ProjectTasks()
+            {
+                CreateDate = DateTime.Now,
+                TaskName = addNewTaskViewModel.Name,
+                FinishDate = addNewTaskViewModel.FinishDate.DateTime,
+                UserId = 2,
+                ProjectId = 1,
+                KanbanId = addNewTaskViewModel.Kanban
+                //ProjectId = HttpContext.Session.GetInt32("KanbanId").Value
+            };
+
+            _context.ProjectTasks.Add(task);
+            await _context.SaveChangesAsync();
+
+            return View(nameof(Index));
         }
 
         public IActionResult GetAllTasks(int project)

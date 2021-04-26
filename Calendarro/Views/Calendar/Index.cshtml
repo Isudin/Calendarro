@@ -1,4 +1,4 @@
-﻿
+﻿@model Calendarro.ViewModels.AddNewTaskViewModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,6 +9,55 @@
     <div id="calendar"></div>
 </div>
 
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="AddEvent">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @*<div class="modal-body" id="valDate">
+                    <p>some content</p>
+                    <input type="text" name="dateValue" id="dateValue" value="" />
+                </div>*@
+
+            @* TODO frontend poprawić tutaj *@
+
+            <form method="post" asp-controller="Calendar" asp-action="AddTask">
+                <div class="text-danger" asp-validation-summary="All"></div>
+                <div class="row">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label asp-for="Name" class="col-form-label"></label>
+                            <input asp-for="Name" type="text" class="form-control" id="task-name">
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FinishDate" class="col-form-label"></label>
+                            <input asp-for="FinishDate" id="finish-date" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Kanban" class="col-form-label"></label>
+                            <input asp-for="Kanban" type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    @* Te dane beda zapisane w sesji *@
+                    <input name="UserId" type="hidden" value="1" class="form-control" />
+                    <input name="ProjectId" type="hidden" value="1" class="form-control" />
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Task</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
 
@@ -31,26 +80,28 @@
                 weekNumbers: false,
                 firstDay: '1',
                 fixedWeekCount: false,
-                themeSystem: 'bootstrap',
+                selectable: true,
+                dateClick: function (info) {
+                    $('#AddEvent').on('show.bs.modal', function (event) {
+                        var modal = $(this);
+
+                        modal.find('.modal-body #finish-date').val(info.dateStr)
+                    });
+                    //var dateValue = $(this).data(info.dateStr);
+                    //$("#AddEvent .modal-body #dateValue").val(dateValue);
+                    //$("#valDate").html(info.dateStr).modal('show');
+                    //var text = $(info.dateStr).val();
+                    //$("#modal_body").val(text);
+                    $("#AddEvent").modal('show');
+                    //alert('Date: ' + info.dateStr);
+                    //alert('Resource ID: ' + info.resource.id);
+                },
                 dayMaxEvents: false, // allow "more" link when too many events
                 events: 'http://localhost:5000/calendar/getalltasks?project=1'
             });
 
             calendar.render();
         });
-
-        //document.addEventListener('DOMContentLoaded', function () {
-        //    var calendarEl = document.getElementById('calendar');
-        //    var calendar = new FullCalendar.Calendar(calendarEl, {
-        //        initialView: 'dayGridMonth',
-        //        events: 'http://localhost:5000/calendar/getalltasks?project=1',
-        //        locale: 'pl',
-        //        start: '',
-        //        center: '',
-        //        end: ''
-        //    });
-        //    calendar.render();
-        //});
 
     </script>
 
