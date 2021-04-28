@@ -23,7 +23,7 @@ namespace Calendarro.Controllers
     {
         private readonly CalendarroDBContext _context;
         private readonly UserManager<CalendarroUser> _userManager;
-        private Projects _currentProject;
+        public static Projects _currentProject;
 
         public HomeController(CalendarroDBContext context, UserManager<CalendarroUser> userManager)
         {
