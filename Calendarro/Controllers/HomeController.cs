@@ -149,9 +149,9 @@ namespace Calendarro.Controllers
             return kanbansList;
         }
 
-        public Projects GetCurrentProject()
+        public void GetCurrentProject()
         {
-            return (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
+            _currentProject = (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
         }
     }
 }
