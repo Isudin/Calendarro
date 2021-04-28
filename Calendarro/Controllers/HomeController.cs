@@ -24,6 +24,7 @@ namespace Calendarro.Controllers
         private readonly CalendarroDBContext _context;
         private readonly UserManager<CalendarroUser> _userManager;
         public static Projects _currentProject;
+        public static List<Projects> _projectsList;
 
         public HomeController(CalendarroDBContext context, UserManager<CalendarroUser> userManager)
         {
@@ -35,18 +36,18 @@ namespace Calendarro.Controllers
         private void SaveUserToSession()
         {
             var user = _userManager.GetUserAsync(User).Result;
-            var dbUser = _context.CalendarroUsers.SingleAsync(user => user.Token == user.UserId.ToString());
-            var serializedUser = JsonConvert.SerializeObject(dbUser.Result);
+            var dbUser = _context.CalendarroUsers.Single(user => user.Token == user.UserId.ToString());
+            var serializedUser = JsonConvert.SerializeObject(dbUser);
             HttpContext.Session.SetString("User", serializedUser);
-            SaveProjectToSession(dbUser.Result);
+            SaveProjectToSession(dbUser);
         }
 
         private void SaveProjectToSession(CalendarroUsers dbUser)
         {
             //Najprawdopodobniej tylko testowe dodawanie projektu do sesji
-            var projectUserRel = _context.ProjectUserRelation.FirstAsync(rel => rel.User == dbUser);
-            var project = _context.Projects.AllAsync(project => project.ProjectId == projectUserRel.Result.ProjectId);
-            var serializedProject = JsonConvert.SerializeObject(project.Result);
+            var projectUserRel = _context.ProjectUserRelation.First(rel => rel.User == dbUser);
+            var project = _context.Projects.First(project => project.ProjectId == projectUserRel.ProjectId);
+            var serializedProject = JsonConvert.SerializeObject(project);
             HttpContext.Session.SetString("Project", serializedProject);
         }
 
@@ -152,6 +153,17 @@ namespace Calendarro.Controllers
         public void GetCurrentProject()
         {
             _currentProject = (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
+        }
+
+        public CalendarroUsers GetCurrentUser()
+        {
+            return (CalendarroUsers)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"));
+        }
+
+        public void GetProjectsList()
+        {
+            var projectUserRel = _context.ProjectUserRelation.FirstAsync(rel => rel.User == GetCurrentUser());
+            _projectsList = _context.Projects.Where(project => project.ProjectUserRelation == projectUserRel).ToList();
         }
     }
 }

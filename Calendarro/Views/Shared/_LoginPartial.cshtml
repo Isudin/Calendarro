@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Calendarro.Areas.Identity.Data
+@using Calendarro.Controllers
 
 @inject SignInManager<CalendarroUser> SignInManager
 @inject UserManager<CalendarroUser> UserManager
@@ -11,12 +12,12 @@
         <button class="button" onclick="alert('Zostanie dodany nowy projekt')">Add new project</button>
 
         <div class="dropdown">
-            <button class="dropbtn">@Calendarro.Controllers.HomeController._currentProject.ProjectName</button>
+            <button class="dropbtn">@HomeController._currentProject.ProjectName</button>
             <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-                <a href="#">Link 4</a>
+                @foreach (var project in HomeController._projectsList)
+                {
+                    <a href="#">@project.ProjectName</a>
+                }
             </div>
         </div>
 
