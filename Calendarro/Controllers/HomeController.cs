@@ -21,29 +21,39 @@ namespace Calendarro.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly CalendarroDBContext _context;
-        private UserManager<CalendarroUser> _userManager;
+        private readonly UserManager<CalendarroUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger, CalendarroDBContext context, UserManager<CalendarroUser> userManager)
+        public HomeController(CalendarroDBContext context, UserManager<CalendarroUser> userManager)
         {
-            _logger = logger;
             _context = context;
             _userManager = userManager;
-            SaveUserToSession().GetAwaiter();
+            SaveUserToSession();
         }
 
-        private async Task SaveUserToSession()
+        private void SaveUserToSession()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user2 = User;
+            var user = _userManager.GetUserAsync(User).Result;
             var dbUser = _context.CalendarroUsers.SingleAsync(user => user.Token == user.UserId.ToString());
-            var serializedUser = JsonConvert.SerializeObject(dbUser);
+            var serializedUser = JsonConvert.SerializeObject(dbUser.Result);
             HttpContext.Session.SetString("User", serializedUser);
+            SaveProjectToSession(dbUser.Result);
+        }
+
+        private void SaveProjectToSession(CalendarroUsers dbUser)
+        {
+            //Najprawdopodobniej tylko testowe dodawanie projektu do sesji
+            //var user = (CalendarroUsers)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"));
+            var projectUserRel = _context.ProjectUserRelation.FirstAsync(rel => rel.User == dbUser);
+            var project = _context.Projects.AllAsync(project => project.ProjectId == projectUserRel.Result.ProjectId);
+            var serializedProject = JsonConvert.SerializeObject(project.Result);
+            HttpContext.Session.SetString("Project", serializedProject);
         }
 
         public IActionResult Index()
         {
-            //var kanbans = PrepareCanbans();
+            var kanbans = PrepareCanbans();
 
 
             return View();
@@ -135,9 +145,9 @@ namespace Calendarro.Controllers
         {
             var kanbansList = new List<Kanbans>();
             var currentProject = (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
-                    foreach (var kanban in _context.Kanbans)
-                        if (kanban.ProjectId == currentProject.ProjectId)
-                            kanbansList.Add(kanban);
+            foreach (var kanban in _context.Kanbans)
+                if (kanban.ProjectId == currentProject.ProjectId)
+                    kanbansList.Add(kanban);
             return kanbansList;
         }
     }
