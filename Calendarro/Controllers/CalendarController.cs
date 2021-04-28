@@ -1,11 +1,9 @@
 ﻿using Calendarro.Areas.Identity.Data;
 using Calendarro.Models.Database;
 using Calendarro.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +36,7 @@ namespace Calendarro.Controllers
                 CreateDate = DateTime.Now,
                 TaskName = addNewTaskViewModel.Name,
                 FinishDate = addNewTaskViewModel.FinishDate.DateTime,
+                // do zmiany
                 UserId = 2,
                 ProjectId = 1,
                 KanbanId = addNewTaskViewModel.Kanban

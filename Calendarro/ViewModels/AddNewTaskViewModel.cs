@@ -6,6 +6,7 @@ namespace Calendarro.ViewModels
     public class AddNewTaskViewModel
     {
         [Required(ErrorMessage = "Task musi mieć nazwę.")]
+        [StringLength(50, MinimumLength = 2)]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Task musi mieć datę.")]
