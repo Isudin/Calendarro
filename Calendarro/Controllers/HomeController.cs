@@ -23,6 +23,7 @@ namespace Calendarro.Controllers
     {
         private readonly CalendarroDBContext _context;
         private readonly UserManager<CalendarroUser> _userManager;
+        private Projects _currentProject;
 
         public HomeController(CalendarroDBContext context, UserManager<CalendarroUser> userManager)
         {
@@ -33,7 +34,6 @@ namespace Calendarro.Controllers
 
         private void SaveUserToSession()
         {
-            var user2 = User;
             var user = _userManager.GetUserAsync(User).Result;
             var dbUser = _context.CalendarroUsers.SingleAsync(user => user.Token == user.UserId.ToString());
             var serializedUser = JsonConvert.SerializeObject(dbUser.Result);
@@ -44,7 +44,6 @@ namespace Calendarro.Controllers
         private void SaveProjectToSession(CalendarroUsers dbUser)
         {
             //Najprawdopodobniej tylko testowe dodawanie projektu do sesji
-            //var user = (CalendarroUsers)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"));
             var projectUserRel = _context.ProjectUserRelation.FirstAsync(rel => rel.User == dbUser);
             var project = _context.Projects.AllAsync(project => project.ProjectId == projectUserRel.Result.ProjectId);
             var serializedProject = JsonConvert.SerializeObject(project.Result);
@@ -144,11 +143,15 @@ namespace Calendarro.Controllers
         public List<Kanbans> PrepareCanbans()
         {
             var kanbansList = new List<Kanbans>();
-            var currentProject = (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
             foreach (var kanban in _context.Kanbans)
-                if (kanban.ProjectId == currentProject.ProjectId)
+                if (kanban.ProjectId == _currentProject.ProjectId)
                     kanbansList.Add(kanban);
             return kanbansList;
+        }
+
+        public Projects GetCurrentProject()
+        {
+            return (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
         }
     }
 }
