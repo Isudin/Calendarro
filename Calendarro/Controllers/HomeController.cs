@@ -30,13 +30,12 @@ namespace Calendarro.Controllers
         {
             _context = context;
             _userManager = userManager;
-            SaveUserToSession();
         }
 
         private void SaveUserToSession()
         {
             var user = _userManager.GetUserAsync(User).Result;
-            var dbUser = _context.CalendarroUsers.Single(user => user.Token == user.UserId.ToString());
+            var dbUser = _context.CalendarroUsers.Single(u => u.Token == user.Id);
             var serializedUser = JsonConvert.SerializeObject(dbUser);
             HttpContext.Session.SetString("User", serializedUser);
             SaveProjectToSession(dbUser);
@@ -49,14 +48,16 @@ namespace Calendarro.Controllers
             var project = _context.Projects.First(project => project.ProjectId == projectUserRel.ProjectId);
             var serializedProject = JsonConvert.SerializeObject(project);
             HttpContext.Session.SetString("Project", serializedProject);
+            _currentProject = project;
         }
 
         public IActionResult Index()
         {
+            SaveUserToSession();
             var kanbans = PrepareCanbans();
 
 
-            return View();
+            return View(kanbans);
         }
 
         public IActionResult Privacy()

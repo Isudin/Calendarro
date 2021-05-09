@@ -12,12 +12,22 @@
         <button class="button" onclick="alert('Zostanie dodany nowy projekt')">Add new project</button>
 
         <div class="dropdown">
-            <button class="dropbtn">@HomeController._currentProject.ProjectName</button>
+            <button class="dropbtn">
+                Yes
+                @*@if (HomeController._currentProject.ProjectName != null)
+                {
+                    @HomeController._currentProject.ProjectName
+                }
+                else
+                {
+                    <p>Brak projektów</p>
+                }*@
+            </button>
             <div class="dropdown-content">
-                @foreach (var project in HomeController._projectsList)
+                @*@foreach (var project in HomeController._projectsList)
                 {
                     <a href="#">@project.ProjectName</a>
-                }
+                }*@
             </div>
         </div>
 

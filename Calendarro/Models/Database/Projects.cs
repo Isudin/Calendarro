@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
@@ -24,8 +25,11 @@ namespace Calendarro.Models.Database
         public string Description { get; set; }
 
         public virtual CalendarroUsers Creator { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Kanbans> Kanbans { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ProjectTasks> ProjectTasks { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ProjectUserRelation> ProjectUserRelation { get; set; }
     }
 }
