@@ -23,10 +23,18 @@
                 }
             </button>
             <div class="dropdown-content">
-                @foreach (var project in HomeController._projectsList)
+                @if (HomeController._projectsList.Count > 0)
                 {
-                    <a href="#">@project.ProjectName</a>
+                    @foreach (var project in HomeController._projectsList)
+                    {
+                        <a href="#">@project.ProjectName</a>
+                    }
                 }
+                else
+                {
+                    <a href="#">Brak projektów</a>
+                }
+
             </div>
         </div>
 
