@@ -140,7 +140,7 @@ body {
 .column {
     float: left;
     width: 50%;
-    height: 640px;
+    height: auto;
 }
 
 .row:after {
@@ -309,3 +309,12 @@ a.btns {
     .dropdown:hover .kanbandrop-content {
         display: block;
     }
+
+#calendar {
+    margin-left: 35px;
+}
+
+.boards {
+    overflow-y: scroll;
+    height: 535px;
+}
