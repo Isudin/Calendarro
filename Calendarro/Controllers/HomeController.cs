@@ -32,6 +32,29 @@ namespace Calendarro.Controllers
             _userManager = userManager;
         }
 
+
+        public IActionResult Index()
+        {
+            SaveUserToSession();
+            GetProjectsList();
+            var kanbans = PrepareCanbans();
+
+
+            return View(kanbans);
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
         private void SaveUserToSession()
         {
             var user = _userManager.GetUserAsync(User).Result;
@@ -49,26 +72,6 @@ namespace Calendarro.Controllers
             var serializedProject = JsonConvert.SerializeObject(project);
             HttpContext.Session.SetString("Project", serializedProject);
             _currentProject = project;
-        }
-
-        public IActionResult Index()
-        {
-            SaveUserToSession();
-            var kanbans = PrepareCanbans();
-
-
-            return View(kanbans);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public async Task<IActionResult> AddUserToProjectAsync(int userId)
@@ -158,7 +161,7 @@ namespace Calendarro.Controllers
 
         public CalendarroUsers GetCurrentUser()
         {
-            return (CalendarroUsers)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"));
+            return (CalendarroUsers)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"), typeof(CalendarroUsers));
         }
 
         public void GetProjectsList()

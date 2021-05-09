@@ -13,21 +13,20 @@
 
         <div class="dropdown">
             <button class="dropbtn">
-                Yes
-                @*@if (HomeController._currentProject.ProjectName != null)
+                @if (HomeController._currentProject.ProjectName != null)
                 {
                     @HomeController._currentProject.ProjectName
                 }
                 else
                 {
                     <p>Brak projektów</p>
-                }*@
+                }
             </button>
             <div class="dropdown-content">
-                @*@foreach (var project in HomeController._projectsList)
+                @foreach (var project in HomeController._projectsList)
                 {
                     <a href="#">@project.ProjectName</a>
-                }*@
+                }
             </div>
         </div>
 
