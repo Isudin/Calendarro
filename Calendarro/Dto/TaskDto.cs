@@ -7,7 +7,7 @@ namespace Calendarro.Dto
 {
     public class TaskDto
     {
-        public int ProjectTaskId { get; set; }
+        public int TaskId { get; set; }
         public string TaskName { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? FinishDate { get; set; }
