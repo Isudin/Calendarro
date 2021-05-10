@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Calendarro.Models.Dto;
+using Calendarro.ViewModels;
 
 namespace Calendarro.Controllers
 {
@@ -41,7 +42,7 @@ namespace Calendarro.Controllers
         {
             SaveUserToSession();
             GetProjectsList();
-            var kanbans = PrepareCanbans();
+            var kanbans = PrepareCanbansWithTasks();
 
 
             return View(kanbans);
@@ -160,13 +161,13 @@ namespace Calendarro.Controllers
             return View();
         }
 
-        public List<Kanbans> PrepareCanbans()
+        public List<KanbanWithTasksViewModel> PrepareCanbansWithTasks()
         {
-            var kanbansList = new List<Kanbans>();
+            var kanbansWithTasksList = new List<KanbanWithTasksViewModel>();
             foreach (var kanban in _context.Kanbans)
                 if (kanban.ProjectId == _currentProject.ProjectId)
-                    kanbansList.Add(kanban);
-            return kanbansList;
+                    kanbansWithTasksList.Add(kanban);
+            return kanbansWithTasksList;
         }
 
         public void GetProjectsList()
@@ -178,6 +179,12 @@ namespace Calendarro.Controllers
         public void GetKanbansTasks()
         {
 
+        }
+
+        public IEnumerable<KanbanDto> GetKanbansList()
+        {
+            var kanbans = _context.Kanbans.Where(k => k.ProjectId == _currentProject.ProjectId).ToList();
+            return _mapper.Map<List<Kanbans>, List<KanbanDto>>(kanbans);
         }
     }
 }
