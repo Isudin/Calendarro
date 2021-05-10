@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Calendarro.Models.Database.Kanbans>
+﻿@model IEnumerable<Calendarro.ViewModels.KanbanWithTasksViewModel>
 @{
     ViewData["Title"] = "Calendarro";
 }
@@ -14,7 +14,7 @@
                 {
                     <div class="sqr">
                         <div class="title">
-                            @kanban.Name
+                            @kanban.Kanban.Name
                         </div>
                         <div class="dropdown" style="float: right;">
                             <button class="kanbandropbtn">...</button>
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="content">
-                            @foreach (var task in kanban.ProjectTasks)
+                            @foreach (var task in kanban.Tasks)
                             {
                                 <div>
                                 @task.TaskName
