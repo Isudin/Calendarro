@@ -309,3 +309,8 @@ a.btns {
     .dropdown:hover .kanbandrop-content {
         display: block;
     }
+
+.boards {
+    height: 535px;
+    overflow-y: scroll;
+}
