@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Calendarro.Areas.Identity.Data;
 using Calendarro.Models.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
+using Calendarro.Models.Mapper;
 
 namespace Calendarro
 {
@@ -39,7 +34,7 @@ namespace Calendarro
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            //services.AddSingleton();
+            services.AddAutoMapper(c => c.AddProfile<Automap>(), typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

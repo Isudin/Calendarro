@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Calendarro.Areas.Identity.Data;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace Calendarro.Controllers
 {
@@ -23,13 +24,15 @@ namespace Calendarro.Controllers
     {
         private readonly CalendarroDBContext _context;
         private readonly UserManager<CalendarroUser> _userManager;
+        private readonly IMapper _mapper;
         public static Projects _currentProject;
         public static List<Projects> _projectsList;
 
-        public HomeController(CalendarroDBContext context, UserManager<CalendarroUser> userManager)
+        public HomeController(CalendarroDBContext context, UserManager<CalendarroUser> userManager, IMapper mapper)
         {
             _context = context;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
 
@@ -175,6 +178,11 @@ namespace Calendarro.Controllers
             //{
             //    _projectsList.Add(_context.Projects.Single(project => project.ProjectUserRelation == rel));
             //}
+        }
+
+        public void GetKanbansTask()
+        {
+
         }
     }
 }
