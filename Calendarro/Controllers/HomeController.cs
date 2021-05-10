@@ -165,7 +165,7 @@ namespace Calendarro.Controllers
         public CalendarroUsers GetCurrentUser()
         {
             return (CalendarroUsers)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"), typeof(CalendarroUsers));
-        }
+        }   
 
         public void GetProjectsList()
         {
@@ -180,7 +180,7 @@ namespace Calendarro.Controllers
             //}
         }
 
-        public void GetKanbansTask()
+        public void GetKanbansTasks()
         {
 
         }
