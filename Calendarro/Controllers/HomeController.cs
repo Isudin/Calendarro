@@ -171,15 +171,8 @@ namespace Calendarro.Controllers
 
         public void GetProjectsList()
         {
-            var projectUserRel = _context.ProjectUserRelation.Where(rel => rel.User == GetCurrentUser()).Select(rel => rel.ProjectId).ToList();
-            //var projectUserRel = _context.ProjectUserRelation.Where(rel => rel.User == GetCurrentUser()).ToList();
-
+            var projectUserRel = _context.ProjectUserRelation.Where(rel => rel.User.UserId == GetCurrentUser().UserId).Select(rel => rel.ProjectId).ToList();
             _projectsList = _context.Projects.Where(project => projectUserRel.Contains(project.ProjectId)).ToList();
-
-            //foreach (var rel in projectUserRel)
-            //{
-            //    _projectsList.Add(_context.Projects.Single(project => project.ProjectUserRelation == rel));
-            //}
         }
 
         public void GetKanbansTasks()
