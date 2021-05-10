@@ -12,7 +12,7 @@ namespace Calendarro.Controllers
     public class CalendarController : Controller
     {
         private readonly CalendarroDBContext _context;
-        private UserManager<CalendarroUser> _userManager;
+        private readonly UserManager<CalendarroUser> _userManager;
 
         public CalendarController(CalendarroDBContext context, UserManager<CalendarroUser> userManager)
         {
