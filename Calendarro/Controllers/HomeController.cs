@@ -16,6 +16,7 @@ using Calendarro.Areas.Identity.Data;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Calendarro.Models.Dto;
 
 namespace Calendarro.Controllers
 {
@@ -25,7 +26,7 @@ namespace Calendarro.Controllers
         private readonly CalendarroDBContext _context;
         private readonly UserManager<CalendarroUser> _userManager;
         private readonly IMapper _mapper;
-        public static Projects _currentProject;
+        public static ProjectDto _currentProject;
         public static List<Projects> _projectsList;
 
         public HomeController(CalendarroDBContext context, UserManager<CalendarroUser> userManager, IMapper mapper)
@@ -57,12 +58,12 @@ namespace Calendarro.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-
         private void SaveUserToSession()
         {
             var user = _userManager.GetUserAsync(User).Result;
             var dbUser = _context.CalendarroUsers.Single(u => u.Token == user.Id);
-            var serializedUser = JsonConvert.SerializeObject(dbUser);
+            var mappedUser = _mapper.Map<UserDto>(dbUser);
+            var serializedUser = JsonConvert.SerializeObject(mappedUser);
             HttpContext.Session.SetString("User", serializedUser);
             SaveProjectToSession(dbUser);
         }
@@ -72,19 +73,30 @@ namespace Calendarro.Controllers
             //Najprawdopodobniej tylko testowe dodawanie projektu do sesji
             var projectUserRel = _context.ProjectUserRelation.First(rel => rel.User == dbUser);
             var project = _context.Projects.First(project => project.ProjectId == projectUserRel.ProjectId);
-            var serializedProject = JsonConvert.SerializeObject(project);
+            var mappedProject = _currentProject = _mapper.Map<ProjectDto>(project);
+            var serializedProject = JsonConvert.SerializeObject(mappedProject);
             HttpContext.Session.SetString("Project", serializedProject);
-            _currentProject = project;
+        }
+
+        public void GetCurrentProject()
+        {
+            _currentProject = (ProjectDto)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
+        }
+
+        public UserDto GetCurrentUser()
+        {
+            return (UserDto)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"), typeof(UserDto));
         }
 
         public async Task<IActionResult> AddUserToProjectAsync(int userId)
         {
-            var relation = new ProjectUserRelation()
+            var relation = new RelationDto()
             {
                 UserId = userId,
                 ProjectId = HttpContext.Session.GetInt32("ProjectId").Value
             };
-            _context.ProjectUserRelation.Add(relation);
+            var mappedRelation = _mapper.Map<ProjectUserRelation>(relation);
+            _context.ProjectUserRelation.Add(mappedRelation);
             await _context.SaveChangesAsync();
             return View();
         }
@@ -156,16 +168,6 @@ namespace Calendarro.Controllers
                     kanbansList.Add(kanban);
             return kanbansList;
         }
-
-        public void GetCurrentProject()
-        {
-            _currentProject = (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
-        }
-
-        public CalendarroUsers GetCurrentUser()
-        {
-            return (CalendarroUsers)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"), typeof(CalendarroUsers));
-        }   
 
         public void GetProjectsList()
         {
