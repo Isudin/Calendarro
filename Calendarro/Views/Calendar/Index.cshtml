@@ -19,18 +19,13 @@
         <partial name="_CalendarView1" />
     </div>
 
-    <div id="trippleView">
+    <div id="trippleView" style="display:none">
         <p>widok potrojny</p>
     </div>
 
-    @*<div class="container">
-            <div id="calendar"></div>
-        </div>*@
-
-    @*<div class="container">
-            <div id="calendar2"></div>
-        </div>*@
-
+    <div id="hexagonalView" style="display:none">
+        <p>widok szesciokronty test</p>
+    </div>
 
 </div>
 @*@await Component.InvokeAsync("CalendarComponent")
@@ -45,25 +40,7 @@
 
         <script src="~/js/calendarViewSingle.js"></script>
 
-
-        <script>
-            var button1 = document.getElementById('calendaView-1');
-            var button2 = document.getElementById('calendaView-3');
-
-            var calContainer = document.getElementById('calendarContainer');
-
-            button1.addEventListener('click', function () {
-                document.getElementById('singleView').style.display = 'block'
-                document.getElementById('trippleView').style.display = 'none'
-            });
-
-            button2.addEventListener('click', function () {
-                document.getElementById('singleView').style.display = 'none'
-                document.getElementById('trippleView').style.display = 'block'
-            });
-
-
-        </script>
+        <script src="~/js/buttonViewChanger.js"></script>
 
         @*<script>
                 document.addEventListener('DOMContentLoaded', function () {
