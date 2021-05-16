@@ -3,9 +3,6 @@
     ViewData["Title"] = "Index";
 }
 
-
-<h1>Index</h1>
-
 <div class="container">
     <button class="btn btn-outline-primary" id="calendaView-1">1</button>
     <button class="btn btn-outline-primary" id="calendaView-3">3</button>
@@ -16,22 +13,12 @@
 
     <div id="singleView">
         <p>test</p>
-        @*<partial name="_CalendarView1" />*@
-        <div class="container">
-            <div id="calendar"></div>
-        </div>
-
+        <partial name="_CalendarView1" />
     </div>
 
     <div id="trippleView" style="display:none">
         <p>widok potrojny</p>
-        @*<div id="calendar1"></div>*@
-        @*<partial name="_CalendarView3" />*@
-        <div class="container">
-            <div id="calendar1"></div>
-            <div id="calendar2"></div>
-            <div id="calendar3"></div>
-        </div>
+        <partial name="_CalendarView3" />
     </div>
 
     <div id="hexagonalView" style="display:none">
@@ -55,48 +42,9 @@
         <script src="~/js/calendarViewSingle.js"></script>
         <script src="~/js/calendarViewTripple.js"></script>
 
-
         <script src="~/js/buttonViewChanger.js"></script>
 
-        @*<script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    var calendarEl = document.getElementById('calendar2');
-
-                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                        timeZone: 'UTC',
-                        themeSystem: 'bootstrap',
-                        headerToolbar: {
-                            left: '',
-                            center: 'title',
-                            right: ''
-                        },
-                        weekNumbers: false,
-                        firstDay: '1',
-                        fixedWeekCount: false,
-                        selectable: true,
-                        contentHeight: "auto",
-                        handleWindowResize: true,
-                        dateClick: function (info) {
-                            $('#AddEvent').on('show.bs.modal', function (event) {
-                                var modal = $(this);
-
-                                modal.find('.modal-body #finish-date').val(info.dateStr)
-                            });
-                            //var dateValue = $(this).data(info.dateStr);
-                            //$("#AddEvent .modal-body #dateValue").val(dateValue);
-                            //$("#valDate").html(info.dateStr).modal('show');
-                            //var text = $(info.dateStr).val();
-                            //$("#modal_body").val(text);
-                            $("#AddEvent").modal('show');
-                        },
-                        dayMaxEvents: false,
-                        events: 'http://localhost:5000/calendar/getalltasks?project=1'
-                    });
-
-                    calendar.render();
-                });
-            </script>*@
-
+   
         <script>
             (function () {
                 'use strict';
@@ -116,47 +64,6 @@
                 }, false);
             })();
 
-        </script>
-
-
-
-        @*<script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    var calendarEl = document.getElementById('calendar');
-
-                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                        timeZone: 'UTC',
-                        themeSystem: 'bootstrap',
-                        headerToolbar: {
-                            left: '',
-                            center: '',
-                            right: ''
-                        },
-                        weekNumbers: false,
-                        firstDay: '1',
-                        fixedWeekCount: false,
-                        selectable: true,
-                        contentHeight: "auto",
-                        handleWindowResize: true,
-                        dateClick: function (info) {
-                            $('#AddEvent').on('show.bs.modal', function (event) {
-                                var modal = $(this);
-
-                                modal.find('.modal-body #finish-date').val(info.dateStr)
-                            });
-                            //var dateValue = $(this).data(info.dateStr);
-                            //$("#AddEvent .modal-body #dateValue").val(dateValue);
-                            //$("#valDate").html(info.dateStr).modal('show');
-                            //var text = $(info.dateStr).val();
-                            //$("#modal_body").val(text);
-                            $("#AddEvent").modal('show');
-                        },
-                        dayMaxEvents: false,
-                        events: 'http://localhost:5000/calendar/getalltasks?project=1'
-                    });
-
-                    calendar.render();
-                });
-            </script>*@
+        </script> 
 
     }

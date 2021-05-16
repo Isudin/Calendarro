@@ -1,4 +1,7 @@
-﻿var button1 = document.getElementById('calendaView-1');
+﻿
+generateSingle();
+
+var button1 = document.getElementById('calendaView-1');
 var button2 = document.getElementById('calendaView-3');
 var button3 = document.getElementById('calendaView-6');
 
