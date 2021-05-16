@@ -3,6 +3,7 @@
     ViewData["Title"] = "Index";
 }
 
+
 <h1>Index</h1>
 
 <div class="container">
@@ -11,125 +12,142 @@
     <button class="btn btn-outline-primary" id="calendaView-6">6</button>
 </div>
 
-<div class="col-md-7 container">
+<div class="col-md-7 container" id="calendarContainer">
+
+
+    <partial name="_CalendarView1" />
 
     @*<div class="container">
             <div id="calendar"></div>
-        </div>
+        </div>*@
 
-        <div class="container">
+    @*<div class="container">
             <div id="calendar2"></div>
         </div>*@
 
 
-    </div>
-        @*@await Component.InvokeAsync("CalendarComponent")
-        @await Component.InvokeAsync("CalendarComponent", new { number = 3 })*@
-
-    <partial name="_AddTaskByCalendarModal" model="Model">
 </div>
-@section Scripts{
+@*@await Component.InvokeAsync("CalendarComponent")
+    @await Component.InvokeAsync("CalendarComponent", new { number = 3 })*@
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar2');
+<partial name="_AddTaskByCalendarModal" model="Model">
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'UTC',
-                themeSystem: 'bootstrap',
-                headerToolbar: {
-                    left: '',
-                    center: 'title',
-                    right: ''
-                },
-                weekNumbers: false,
-                firstDay: '1',
-                fixedWeekCount: false,
-                selectable: true,
-                contentHeight: "auto",
-                handleWindowResize: true,
-                dateClick: function (info) {
-                    $('#AddEvent').on('show.bs.modal', function (event) {
-                        var modal = $(this);
+    @section Scripts{
 
-                        modal.find('.modal-body #finish-date').val(info.dateStr)
-                    });
-                    //var dateValue = $(this).data(info.dateStr);
-                    //$("#AddEvent .modal-body #dateValue").val(dateValue);
-                    //$("#valDate").html(info.dateStr).modal('show');
-                    //var text = $(info.dateStr).val();
-                    //$("#modal_body").val(text);
-                    $("#AddEvent").modal('show');
-                },
-                dayMaxEvents: false,
-                events: 'http://localhost:5000/calendar/getalltasks?project=1'
+        <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
+        <script src="~/lib/fullcalendar/main.min.js"></script>
+
+
+        <script src="~/js/calendarViewSingle.js"></script>
+
+
+        <script>
+            var button1 = document.getElementById('calendaView-1');
+            var calContainer = document.getElementById('calendarContainer');
+
+            button.addEventListener('click', function () {
             });
+        </script>
 
-            calendar.render();
-        });
-    </script>
+        @*<script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var calendarEl = document.getElementById('calendar2');
 
-    <script>
-        (function () {
-            'use strict';
-            window.addEventListener('load', function () {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        timeZone: 'UTC',
+                        themeSystem: 'bootstrap',
+                        headerToolbar: {
+                            left: '',
+                            center: 'title',
+                            right: ''
+                        },
+                        weekNumbers: false,
+                        firstDay: '1',
+                        fixedWeekCount: false,
+                        selectable: true,
+                        contentHeight: "auto",
+                        handleWindowResize: true,
+                        dateClick: function (info) {
+                            $('#AddEvent').on('show.bs.modal', function (event) {
+                                var modal = $(this);
+
+                                modal.find('.modal-body #finish-date').val(info.dateStr)
+                            });
+                            //var dateValue = $(this).data(info.dateStr);
+                            //$("#AddEvent .modal-body #dateValue").val(dateValue);
+                            //$("#valDate").html(info.dateStr).modal('show');
+                            //var text = $(info.dateStr).val();
+                            //$("#modal_body").val(text);
+                            $("#AddEvent").modal('show');
+                        },
+                        dayMaxEvents: false,
+                        events: 'http://localhost:5000/calendar/getalltasks?project=1'
+                    });
+
+                    calendar.render();
                 });
-            }, false);
-        })();
+            </script>*@
 
-    </script>
-
-    <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
-    <script src="~/lib/fullcalendar/main.min.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'UTC',
-                themeSystem: 'bootstrap',
-                headerToolbar: {
-                    left: '',
-                    center: '',
-                    right: ''
-                },
-                weekNumbers: false,
-                firstDay: '1',
-                fixedWeekCount: false,
-                selectable: true,
-                contentHeight: "auto",
-                handleWindowResize: true,
-                dateClick: function (info) {
-                    $('#AddEvent').on('show.bs.modal', function (event) {
-                        var modal = $(this);
-
-                        modal.find('.modal-body #finish-date').val(info.dateStr)
+        <script>
+            (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
                     });
-                    //var dateValue = $(this).data(info.dateStr);
-                    //$("#AddEvent .modal-body #dateValue").val(dateValue);
-                    //$("#valDate").html(info.dateStr).modal('show');
-                    //var text = $(info.dateStr).val();
-                    //$("#modal_body").val(text);
-                    $("#AddEvent").modal('show');
-                },
-                dayMaxEvents: false,
-                events: 'http://localhost:5000/calendar/getalltasks?project=1'
-            });
+                }, false);
+            })();
 
-            calendar.render();
-        });
-    </script>
+        </script>
 
-}
+
+
+        @*<script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var calendarEl = document.getElementById('calendar');
+
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        timeZone: 'UTC',
+                        themeSystem: 'bootstrap',
+                        headerToolbar: {
+                            left: '',
+                            center: '',
+                            right: ''
+                        },
+                        weekNumbers: false,
+                        firstDay: '1',
+                        fixedWeekCount: false,
+                        selectable: true,
+                        contentHeight: "auto",
+                        handleWindowResize: true,
+                        dateClick: function (info) {
+                            $('#AddEvent').on('show.bs.modal', function (event) {
+                                var modal = $(this);
+
+                                modal.find('.modal-body #finish-date').val(info.dateStr)
+                            });
+                            //var dateValue = $(this).data(info.dateStr);
+                            //$("#AddEvent .modal-body #dateValue").val(dateValue);
+                            //$("#valDate").html(info.dateStr).modal('show');
+                            //var text = $(info.dateStr).val();
+                            //$("#modal_body").val(text);
+                            $("#AddEvent").modal('show');
+                        },
+                        dayMaxEvents: false,
+                        events: 'http://localhost:5000/calendar/getalltasks?project=1'
+                    });
+
+                    calendar.render();
+                });
+            </script>*@
+
+    }

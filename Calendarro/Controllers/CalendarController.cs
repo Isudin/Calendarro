@@ -28,6 +28,11 @@ namespace Calendarro.Controllers
             return View();
         }
 
+        public IActionResult CalendarView1()
+        {
+            return PartialView("_CalendarView1");
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddTaskAsync(AddNewTaskViewModel addNewTaskViewModel /*int userId, string name, DateTime finishDate*/)
         {
