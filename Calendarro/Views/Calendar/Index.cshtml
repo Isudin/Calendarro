@@ -16,11 +16,22 @@
 
     <div id="singleView">
         <p>test</p>
-        <partial name="_CalendarView1" />
+        @*<partial name="_CalendarView1" />*@
+        <div class="container">
+            <div id="calendar"></div>
+        </div>
+
     </div>
 
     <div id="trippleView" style="display:none">
         <p>widok potrojny</p>
+        @*<div id="calendar1"></div>*@
+        @*<partial name="_CalendarView3" />*@
+        <div class="container">
+            <div id="calendar1"></div>
+            <div id="calendar2"></div>
+            <div id="calendar3"></div>
+        </div>
     </div>
 
     <div id="hexagonalView" style="display:none">
@@ -28,8 +39,11 @@
     </div>
 
 </div>
-@*@await Component.InvokeAsync("CalendarComponent")
-    @await Component.InvokeAsync("CalendarComponent", new { number = 3 })*@
+
+@*
+    @await Component.InvokeAsync("CalendarComponent")
+    @await Component.InvokeAsync("CalendarComponent", new { number = 3 })
+*@
 
 <partial name="_AddTaskByCalendarModal" model="Model">
 
@@ -39,6 +53,8 @@
         <script src="~/lib/fullcalendar/main.min.js"></script>
 
         <script src="~/js/calendarViewSingle.js"></script>
+        <script src="~/js/calendarViewTripple.js"></script>
+
 
         <script src="~/js/buttonViewChanger.js"></script>
 

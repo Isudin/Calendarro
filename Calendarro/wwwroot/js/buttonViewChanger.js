@@ -8,12 +8,14 @@ button1.addEventListener('click', function () {
     document.getElementById('singleView').style.display = 'block'
     document.getElementById('trippleView').style.display = 'none'
     document.getElementById('hexagonalView').style.display = 'none'
+    generateSingle();
 });
 
 button2.addEventListener('click', function () {
     document.getElementById('singleView').style.display = 'none'
     document.getElementById('trippleView').style.display = 'block'
     document.getElementById('hexagonalView').style.display = 'none'
+    generateTrippleView();
 });
 
 button3.addEventListener('click', function () {
