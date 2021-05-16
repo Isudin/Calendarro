@@ -12,17 +12,6 @@ a {
     color: #0366d6;
 }
 
-.btn-primary {
-    margin-left: 70px;
-    padding-left: 50px;
-    padding-right: 50px;
-    border-color: lightslategray;
-    border-radius: 5px;
-    background-color: lightslategray;
-    font-size: 20px;
-    color: white;
-}
-
 .window {
     background-color: dimgray;
     vertical-align: central;
@@ -47,10 +36,6 @@ a {
     margin-top: 30px;
     margin-left: 30px;
     height: 35px;
-}
-
-.checkbox {
-    margin-left: 85px;
 }
 
 hr {

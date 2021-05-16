@@ -8,14 +8,16 @@
     <link href="~/css/site.css" rel="stylesheet" type="text/css" />
 </head>
 
-<h1>@ViewData["Title"]</h1>
-<div class="container">
-    <div class="pb-3">
-        <div class="window">
+<center>
+    <h1>@ViewData["Title"]</h1>
+</center>
+<div class="row d-flex justify-content-center text-center">
+    <div class="col-md-4 bg-secondary rounded">
+        <section>
             <form id="account" method="post">
-                <div class="label">
-                    Witaj w Calendarro
-                </div>
+                <br />
+                <h4>Witaj w Calendarro</h4>
+                <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     @*<label asp-for="Input.Email"></label>*@
@@ -27,7 +29,7 @@
                     <input asp-for="Input.Password" class="form-control" placeholder="Hasło" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group justify-content-center">
                     <div class="checkbox">
                         <label asp-for="Input.RememberMe">
                             <input asp-for="Input.RememberMe" />
@@ -35,54 +37,53 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Zaloguj</button>
+                <div class="form-group d-flex justify-content-center">
+                    <button type="submit" class="btn btn-dark btn-lg">Zaloguj</button>
                 </div>
                 <hr />
-                <div class="form-group">
-                    <p class="register">
+                <div class="form-group text-center font-weight-bolder">
+                    <p>
                         <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Rejestracja</a>
                     </p>
-                    <p class="forgotpw">
-                        <a id="forgot-password" asp-page="./ForgotPassword">Zapomniałem hasła</a>
+                    <p>
+                        <a asp-page="./ForgotPassword">Zapomniałem hasła</a>
                     </p>
                 </div>
             </form>
-        </div>
+        </section>
     </div>
 
     @*<div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>use another service to log in.</h4>
-            <hr />
-            @{
-                if ((model.externallogins?.count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            there are no external authentication services configured. see <a href="https://go.microsoft.com/fwlink/?linkid=532715">this article</a>
-                            for details on setting up this asp.net application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./externallogin" asp-route-returnurl="@model.returnurl" method="post" class="form-horizontal">
+            <section>
+                <h4>use another service to log in.</h4>
+                <hr />
+                @{
+                    if ((model.externallogins?.count ?? 0) == 0)
+                    {
                         <div>
                             <p>
-                                @foreach (var provider in model.externallogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.name" title="log in using your @provider.displayname account">@provider.displayname</button>
-                                }
+                                there are no external authentication services configured. see <a href="https://go.microsoft.com/fwlink/?linkid=532715">this article</a>
+                                for details on setting up this asp.net application to support logging in via external services.
                             </p>
                         </div>
-                    </form>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./externallogin" asp-route-returnurl="@model.returnurl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in model.externallogins)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.name" title="log in using your @provider.displayname account">@provider.displayname</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
                 }
-            }
-        </section>
-    </div>*@
-    </div>
-
-    @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
-    }
+            </section>
+        </div>*@
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
