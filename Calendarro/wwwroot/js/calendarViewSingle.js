@@ -1,5 +1,4 @@
 ﻿function generateSingle() {
-
     var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         timeZone: 'local',
         themeSystem: 'bootstrap',
@@ -21,11 +20,6 @@
 
                 modal.find('.modal-body #finish-date').val(info.dateStr)
             });
-            //var dateValue = $(this).data(info.dateStr);
-            //$("#AddEvent .modal-body #dateValue").val(dateValue);
-            //$("#valDate").html(info.dateStr).modal('show');
-            //var text = $(info.dateStr).val();
-            //$("#modal_body").val(text);
             $("#AddEvent").modal('show');
         },
         dayMaxEvents: false,

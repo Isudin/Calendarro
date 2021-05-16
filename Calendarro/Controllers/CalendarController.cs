@@ -21,37 +21,34 @@ namespace Calendarro.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var test = await _userManager.GetUserAsync(User);
-
             return View();
         }
 
-        public IActionResult CalendarView1()
-        {
-            return PartialView("_CalendarView1");
-        }
-
         [HttpPost]
-        public async Task<IActionResult> AddTaskAsync(AddNewTaskViewModel addNewTaskViewModel /*int userId, string name, DateTime finishDate*/)
+        public async Task<IActionResult> AddTaskAsync(AddNewTaskViewModel addNewTaskViewModel)
         {
-            var task = new ProjectTasks()
+            if (ModelState.IsValid)
             {
-                CreateDate = DateTime.Now,
-                TaskName = addNewTaskViewModel.Name,
-                FinishDate = addNewTaskViewModel.FinishDate.DateTime,
-                // do zmiany
-                UserId = 2,
-                ProjectId = 1,
-                KanbanId = addNewTaskViewModel.Kanban
-                //ProjectId = HttpContext.Session.GetInt32("KanbanId").Value
-            };
+                var task = new ProjectTasks()
+                {
+                    CreateDate = DateTime.Now,
+                    TaskName = addNewTaskViewModel.Name,
+                    FinishDate = addNewTaskViewModel.FinishDate.DateTime,
+                    // do zmiany
+                    UserId = 2,
+                    ProjectId = 1,
+                    KanbanId = addNewTaskViewModel.Kanban
+                    //ProjectId = HttpContext.Session.GetInt32("KanbanId").Value
+                };
 
-            _context.ProjectTasks.Add(task);
-            await _context.SaveChangesAsync();
+                _context.ProjectTasks.Add(task);
+                await _context.SaveChangesAsync();
 
-            return View(nameof(Index));
+                return View(nameof(Index));
+            }
+            return View(nameof(Index), addNewTaskViewModel);
         }
 
         public IActionResult GetAllTasks(int project)
