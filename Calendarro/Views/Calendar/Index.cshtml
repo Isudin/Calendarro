@@ -14,8 +14,14 @@
 
 <div class="col-md-7 container" id="calendarContainer">
 
+    <div id="singleView">
+        <p>test</p>
+        <partial name="_CalendarView1" />
+    </div>
 
-    <partial name="_CalendarView1" />
+    <div id="trippleView">
+        <p>widok potrojny</p>
+    </div>
 
     @*<div class="container">
             <div id="calendar"></div>
@@ -37,16 +43,26 @@
         <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
         <script src="~/lib/fullcalendar/main.min.js"></script>
 
-
         <script src="~/js/calendarViewSingle.js"></script>
 
 
         <script>
             var button1 = document.getElementById('calendaView-1');
+            var button2 = document.getElementById('calendaView-3');
+
             var calContainer = document.getElementById('calendarContainer');
 
-            button.addEventListener('click', function () {
+            button1.addEventListener('click', function () {
+                document.getElementById('singleView').style.display = 'block'
+                document.getElementById('trippleView').style.display = 'none'
             });
+
+            button2.addEventListener('click', function () {
+                document.getElementById('singleView').style.display = 'none'
+                document.getElementById('trippleView').style.display = 'block'
+            });
+
+
         </script>
 
         @*<script>
