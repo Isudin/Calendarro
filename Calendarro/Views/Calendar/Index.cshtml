@@ -1,7 +1,4 @@
 ﻿@model Calendarro.ViewModels.AddNewTaskViewModel
-@{
-    ViewData["Title"] = "Index";
-}
 
 <div class="container">
     <button class="btn btn-outline-primary" id="calendaView-1">1</button>
@@ -9,61 +6,53 @@
     <button class="btn btn-outline-primary" id="calendaView-6">6</button>
 </div>
 
-<div class="col-md-7 container" id="calendarContainer">
+<div class="container" id="calendarContainer">
 
     <div id="singleView">
-        <p>test</p>
         <partial name="_CalendarView1" />
     </div>
 
     <div id="trippleView" style="display:none">
-        <p>widok potrojny</p>
         <partial name="_CalendarView3" />
     </div>
 
     <div id="hexagonalView" style="display:none">
-        <p>widok szesciokronty test</p>
+        <partial name="_CalendarView6" />
     </div>
 
 </div>
 
-@*
-    @await Component.InvokeAsync("CalendarComponent")
-    @await Component.InvokeAsync("CalendarComponent", new { number = 3 })
-*@
+<partial name="_AddTaskByCalendarModal" model="Model" />
 
-<partial name="_AddTaskByCalendarModal" model="Model">
+@section Scripts{
 
-    @section Scripts{
+    <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
+    <script src="~/lib/fullcalendar/main.min.js"></script>
 
-        <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
-        <script src="~/lib/fullcalendar/main.min.js"></script>
+    <script src="~/js/calendarViewSingle.js"></script>
+    <script src="~/js/calendarViewTripple.js"></script>
+    <script src="~/js/calendarViewHexagonal.js"></script>
 
-        <script src="~/js/calendarViewSingle.js"></script>
-        <script src="~/js/calendarViewTripple.js"></script>
+    <script src="~/js/buttonViewChanger.js"></script>
 
-        <script src="~/js/buttonViewChanger.js"></script>
 
-   
-        <script>
-            (function () {
-                'use strict';
-                window.addEventListener('load', function () {
-                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                    var forms = document.getElementsByClassName('needs-validation');
-                    // Loop over them and prevent submission
-                    var validation = Array.prototype.filter.call(forms, function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (form.checkValidity() === false) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }
-                            form.classList.add('was-validated');
-                        }, false);
-                    });
-                }, false);
-            })();
-
-        </script> 
-
-    }
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}

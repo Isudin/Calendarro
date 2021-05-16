@@ -1,4 +1,5 @@
 ﻿function generateTrippleView() {
+
     var calendar = new FullCalendar.Calendar(document.getElementById('calendar1'), {
         timeZone: 'UTC',
         themeSystem: 'bootstrap',

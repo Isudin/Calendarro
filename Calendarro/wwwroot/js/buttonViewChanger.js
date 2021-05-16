@@ -15,6 +15,7 @@ button1.addEventListener('click', function () {
 });
 
 button2.addEventListener('click', function () {
+
     document.getElementById('singleView').style.display = 'none'
     document.getElementById('trippleView').style.display = 'block'
     document.getElementById('hexagonalView').style.display = 'none'
@@ -25,4 +26,6 @@ button3.addEventListener('click', function () {
     document.getElementById('singleView').style.display = 'none'
     document.getElementById('trippleView').style.display = 'none'
     document.getElementById('hexagonalView').style.display = 'block'
+
+    generateHexagonalView();
 });

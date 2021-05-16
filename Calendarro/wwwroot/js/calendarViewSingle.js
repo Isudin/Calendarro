@@ -1,8 +1,9 @@
 ﻿function generateSingle() {
 
     var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-        timeZone: 'UTC',
+        timeZone: 'local',
         themeSystem: 'bootstrap',
+        locale: 'pl',
         headerToolbar: {
             left: '',
             center: 'title',
