@@ -44,8 +44,14 @@ namespace Calendarro.Controllers
             _projectsList = GetProjectsList();
             var kanbans = PrepareCanbansWithTasks();
 
+            //tutaj zmiana Natan
 
-            return View(kanbans);
+            var model = new MainViewModel
+            {
+                KanbanWithTasks = kanbans,
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()
@@ -159,7 +165,7 @@ namespace Calendarro.Controllers
             foreach (var kanban in kanbans)
                 kanbansWithTasksList.Add(new KanbanWithTasksViewModel()
                 {
-                    Kanban = kanban, 
+                    Kanban = kanban,
                     Tasks = GetKanbanTasks(kanban.KanbanId)
                 });
 

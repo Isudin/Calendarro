@@ -1,117 +1,42 @@
 ﻿@model Calendarro.ViewModels.AddNewTaskViewModel
-@{
-    ViewData["Title"] = "Index";
-}
 
-<h1>Index</h1>
-
-<div class="col-md-7 container">
-
-    @*<div class="container">
-        <div id="calendar"></div>
-    </div>
-
-    <div class="container">
-        <div id="calendar2"></div>
-    </div>*@
-
-
-</div>
-@await Component.InvokeAsync("CalendarComponent")
-@await Component.InvokeAsync("CalendarComponent", new { number = 3 })
-
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="AddEvent">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add new task</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            @* TODO frontend poprawić tutaj *@
-
-            <form role="form" method="post" class="needs-validation" asp-controller="Calendar" asp-action="AddTask" id="modalForm">
-                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                <div class="row">
-
-                    @* Poprawic walidaje danych *@
-
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label asp-for="Name" class="col-form-label"></label>
-                            <input asp-for="Name" type="text" class="form-control" id="task-name">
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="FinishDate" class="col-form-label"></label>
-                            <input asp-for="FinishDate" id="finish-date" class="form-control" />
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="Kanban" class="col-form-label"></label>
-                            <input asp-for="Kanban" type="text" class="form-control" />
-                        </div>
-                    </div>
-
-                    @* Te dane beda zapisane w sesji *@
-                    <input name="UserId" type="hidden" value="1" class="form-control" />
-                    <input name="ProjectId" type="hidden" value="1" class="form-control" />
-
-                    <div class="modal-footer">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Save Task</button>
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="container">
+    <button class="btn btn-outline-primary" id="calendaView-1">1</button>
+    <button class="btn btn-outline-primary" id="calendaView-3">3</button>
+    <button class="btn btn-outline-primary" id="calendaView-6">6</button>
 </div>
 
+<div class="container" id="calendarContainer">
+
+    <div id="singleView">
+        <partial name="_CalendarView1" />
+    </div>
+
+    <div id="trippleView" style="display:none">
+        <partial name="_CalendarView3" />
+    </div>
+
+    <div id="hexagonalView" style="display:none">
+        <partial name="_CalendarView6" />
+    </div>
+
+</div>
+
+<partial name="_AddTaskByCalendarModal" model="Model" />
 
 @section Scripts{
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar2');
+    <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
+    <script src="~/lib/fullcalendar/main.min.js"></script>
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'UTC',
-                themeSystem: 'bootstrap',
-                headerToolbar: {
-                    left: '',
-                    center: 'title',
-                    right: ''
-                },
-                weekNumbers: false,
-                firstDay: '1',
-                fixedWeekCount: false,
-                selectable: true,
-                contentHeight: "auto",
-                handleWindowResize: true,
-                dateClick: function (info) {
-                    $('#AddEvent').on('show.bs.modal', function (event) {
-                        var modal = $(this);
+    <script src="~/js/calendarMonthGenerator.js"></script>
 
-                        modal.find('.modal-body #finish-date').val(info.dateStr)
-                    });
-                    //var dateValue = $(this).data(info.dateStr);
-                    //$("#AddEvent .modal-body #dateValue").val(dateValue);
-                    //$("#valDate").html(info.dateStr).modal('show');
-                    //var text = $(info.dateStr).val();
-                    //$("#modal_body").val(text);
-                    $("#AddEvent").modal('show');
-                },
-                dayMaxEvents: false,
-                events: 'http://localhost:5000/calendar/getalltasks?project=1'
-            });
+    <script src="~/js/calendarViewSingle.js"></script>
+    <script src="~/js/calendarViewTripple.js"></script>
+    <script src="~/js/calendarViewHexagonal.js"></script>
 
-            calendar.render();
-        });
-    </script>
+    <script src="~/js/buttonViewChanger.js"></script>
+
 
     <script>
         (function () {
@@ -131,49 +56,5 @@
                 });
             }, false);
         })();
-
     </script>
-
-    <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
-    <script src="~/lib/fullcalendar/main.min.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'UTC',
-                themeSystem: 'bootstrap',
-                headerToolbar: {
-                    left: '',
-                    center: '',
-                    right: ''
-                },
-                weekNumbers: false,
-                firstDay: '1',
-                fixedWeekCount: false,
-                selectable: true,
-                contentHeight: "auto",
-                handleWindowResize: true,
-                dateClick: function (info) {
-                    $('#AddEvent').on('show.bs.modal', function (event) {
-                        var modal = $(this);
-
-                        modal.find('.modal-body #finish-date').val(info.dateStr)
-                    });
-                    //var dateValue = $(this).data(info.dateStr);
-                    //$("#AddEvent .modal-body #dateValue").val(dateValue);
-                    //$("#valDate").html(info.dateStr).modal('show');
-                    //var text = $(info.dateStr).val();
-                    //$("#modal_body").val(text);
-                    $("#AddEvent").modal('show');
-                },
-                dayMaxEvents: false,
-                events: 'http://localhost:5000/calendar/getalltasks?project=1'
-            });
-
-            calendar.render();
-        });
-    </script>
-
 }
