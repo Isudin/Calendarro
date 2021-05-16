@@ -1,30 +1,60 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
+﻿@model Calendarro.ViewModels.AddNewTaskViewModel
 
 <div class="container">
-    <div id="calendar"></div>
+    <button class="btn btn-outline-primary" id="calendaView-1">1</button>
+    <button class="btn btn-outline-primary" id="calendaView-3">3</button>
+    <button class="btn btn-outline-primary" id="calendaView-6">6</button>
 </div>
+
+<div class="container" id="calendarContainer">
+
+    <div id="singleView">
+        <partial name="_CalendarView1" />
+    </div>
+
+    <div id="trippleView" style="display:none">
+        <partial name="_CalendarView3" />
+    </div>
+
+    <div id="hexagonalView" style="display:none">
+        <partial name="_CalendarView6" />
+    </div>
+
+</div>
+
+<partial name="_AddTaskByCalendarModal" model="Model" />
 
 @section Scripts{
 
     <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
     <script src="~/lib/fullcalendar/main.min.js"></script>
 
+    <script src="~/js/calendarMonthGenerator.js"></script>
+
+    <script src="~/js/calendarViewSingle.js"></script>
+    <script src="~/js/calendarViewTripple.js"></script>
+    <script src="~/js/calendarViewHexagonal.js"></script>
+
+    <script src="~/js/buttonViewChanger.js"></script>
+
+
     <script>
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'pl'
-            });
-            calendar.render();
-        });
-
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
     </script>
-
 }

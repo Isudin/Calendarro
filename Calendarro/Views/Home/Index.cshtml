@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Calendarro.ViewModels.MainViewModel
+@{
     ViewData["Title"] = "Calendarro";
 }
 <head>
@@ -9,38 +10,102 @@
     <div class="row">
         <div class="column" style="border-right: 5px solid dimgray">
             <div class="boards">
-                <div class="sqr">
-                    <div class="title">
-                        TODO
+                @foreach (var kanban in Model.KanbanWithTasks)
+                {
+                    <div class="sqr">
+                        <div class="title">
+                            @kanban.Kanban.Name
+                        </div>
+                        <div class="dropdown" style="float: right;">
+                            <button class="kanbandropbtn">...</button>
+                            <div class="kanbandrop-content">
+                                <a href="#">+</a>
+                                <a href="#">-</a>
+                            </div>
+                        </div>
+                        <div class="content">
+                            @foreach (var task in kanban.Tasks)
+                            {
+                                <div>
+                                    @task.TaskName
+                                </div>
+                            }
+                        </div>
                     </div>
-                    <div class="content"></div>
-                </div>
-                <div class="sqr">
-                    <div class="title">
-                        DONE
-                    </div>
-                    <div class="content"></div>
-                </div>
-                <div class="sqr">
-                    <div class="title">
-                        NOTES
-                    </div>
-                    <div class="content"></div>
-                </div>
-                <div class="sqr">
-                    <div class="title">
-                        IN PROGRESS
-                    </div>
-                    <div class="content"></div>
-                </div>
+                }
             </div>
         </div>
         <div class="column" style="border-left: 5px solid dimgray">
-            <div class="calendar_buttons">
-                <div id="button1"><a href="#" class="btns">1</a></div>
-                <div id="button2"><a href="#" class="btns">3</a></div>
-                <div id="button3"><a href="#" class="btns">6</a></div>
-            </div>           
+            @*<div class="calendar_buttons">
+                    <div id="button1"><a href="#" class="btns">1</a></div>
+                    <div id="button2"><a href="#" class="btns">3</a></div>
+                    <div id="button3"><a href="#" class="btns">6</a></div>
+                </div>
+                <div class="container">
+                    <div id="calendar"></div>
+                </div>*@
+
+            <div class="container">
+                <button class="btn btn-outline-primary" id="calendaView-1">1</button>
+                <button class="btn btn-outline-primary" id="calendaView-3">3</button>
+                <button class="btn btn-outline-primary" id="calendaView-6">6</button>
+            </div>
+
+            <div class="container" id="calendarContainer">
+
+                <div id="singleView">
+                    <partial name="_CalendarView1" />
+                </div>
+
+                <div id="trippleView" style="display:none">
+                    <partial name="_CalendarView3" />
+                </div>
+
+                <div id="hexagonalView" style="display:none">
+                    <partial name="_CalendarView6" />
+                </div>
+
+            </div>
+
+            <partial name="_AddTaskByCalendarModal" model="Model.AddNewTaskViewModel" />
+
         </div>
     </div>
 </body>
+
+
+@section Scripts{
+    <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
+    <script src="~/lib/fullcalendar/main.min.js"></script>
+
+    <script src="~/js/calendarMonthGenerator.js"></script>
+
+    <script src="~/js/calendarViewSingle.js"></script>
+    <script src="~/js/calendarViewTripple.js"></script>
+    <script src="~/js/calendarViewHexagonal.js"></script>
+
+    <script src="~/js/buttonViewChanger.js"></script>
+
+
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+
+}

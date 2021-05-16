@@ -14,35 +14,44 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Calendarro.Areas.Identity.Data;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Calendarro.Models.Dto;
+using Calendarro.ViewModels;
 
 namespace Calendarro.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly CalendarroDBContext _context;
-        private UserManager<CalendarroUser> _userManager;
+        private readonly UserManager<CalendarroUser> _userManager;
+        private readonly IMapper _mapper;
+        public static ProjectDto _currentProject;
+        public static List<ProjectDto> _projectsList;
 
-        public HomeController(ILogger<HomeController> logger, CalendarroDBContext context, UserManager<CalendarroUser> userManager)
+        public HomeController(CalendarroDBContext context, UserManager<CalendarroUser> userManager, IMapper mapper)
         {
-            _logger = logger;
             _context = context;
             _userManager = userManager;
-            SaveUserToSession(userManager);
+            _mapper = mapper;
         }
 
-        private async Task SaveUserToSession(UserManager<CalendarroUser> userManager)
-        {
-            var user = await userManager.GetUserAsync(User);
-            var serializedUser = JsonConvert.SerializeObject(user);
-            HttpContext.Session.SetString("User", serializedUser);
-        }
 
         public IActionResult Index()
         {
-            //var kanbans = PrepareCanbans();
-            return View();
+            SaveUserToSession();
+            _projectsList = GetProjectsList();
+            var kanbans = PrepareCanbansWithTasks();
+
+            //tutaj zmiana Natan
+
+            var model = new MainViewModel
+            {
+                KanbanWithTasks = kanbans,
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()
@@ -56,52 +65,84 @@ namespace Calendarro.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        private void SaveUserToSession()
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            var dbUser = _context.CalendarroUsers.Single(u => u.Token == user.Id);
+            var mappedUser = _mapper.Map<UserDto>(dbUser);
+            var serializedUser = JsonConvert.SerializeObject(mappedUser);
+            HttpContext.Session.SetString("User", serializedUser);
+            SaveProjectToSession(dbUser);
+        }
+
+        private void SaveProjectToSession(CalendarroUsers dbUser)
+        {
+            //Najprawdopodobniej tylko testowe dodawanie projektu do sesji
+            var projectUserRel = _context.ProjectUserRelation.First(rel => rel.User == dbUser);
+            var project = _context.Projects.First(project => project.ProjectId == projectUserRel.ProjectId);
+            var mappedProject = _currentProject = _mapper.Map<ProjectDto>(project);
+            var serializedProject = JsonConvert.SerializeObject(mappedProject);
+            HttpContext.Session.SetString("Project", serializedProject);
+        }
+
+        public void GetCurrentProject()
+        {
+            _currentProject = (ProjectDto)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
+        }
+
+        public UserDto GetCurrentUser()
+        {
+            return (UserDto)JsonConvert.DeserializeObject(HttpContext.Session.GetString("User"), typeof(UserDto));
+        }
+
         public async Task<IActionResult> AddUserToProjectAsync(int userId)
         {
-            var relation = new ProjectUserRelation()
+            var relation = new RelationDto()
             {
                 UserId = userId,
                 ProjectId = HttpContext.Session.GetInt32("ProjectId").Value
             };
-            _context.ProjectUserRelation.Add(relation);
+            var mappedRelation = _mapper.Map<ProjectUserRelation>(relation);
+            _context.ProjectUserRelation.Add(mappedRelation);
             await _context.SaveChangesAsync();
+
             return View();
         }
 
         public async Task<IActionResult> AddProjectAsync(string name, string description, DateTime finishingDate)
         {
-            var project = new Projects()
+            var project = new ProjectDto()
             {
                 CreateDate = DateTime.Now,
                 Description = description,
                 ProjectName = name,
                 FinishingDate = finishingDate,
-                //CreatorId = _userManager.GetUserIdAsync().Result,
-                //CreatorId = User.FindFirstValue(ClaimTypes.NameIdentifier)
-                //CreatorId = _userManager.GetUserAsync(User).Result.Id
-                CreatorId = HttpContext.Session.GetInt32("CreatorId").Value
-
+                CreatorId = GetCurrentUser().UserId
             };
-            _context.Projects.Add(project);
+            var dbProject = _mapper.Map<Projects>(project);
+            _context.Projects.Add(dbProject);
             await _context.SaveChangesAsync();
+
             return View();
         }
 
         public async Task<IActionResult> AddKanbanAsync(string name)
         {
-            var kanban = new Kanbans()
+            var kanban = new KanbanDto()
             {
                 Name = name,
                 ProjectId = HttpContext.Session.GetInt32("ProjectId").Value
             };
-            _context.Kanbans.Add(kanban);
+            var dbKanban = _mapper.Map<Kanbans>(kanban);
+            _context.Kanbans.Add(dbKanban);
             await _context.SaveChangesAsync();
+
             return View();
         }
 
         public async Task<IActionResult> AddTaskAsync(int userId, string name, DateTime finishDate)
         {
-            var task = new ProjectTasks()
+            var task = new TaskDto()
             {
                 CreateDate = DateTime.Now,
                 TaskName = name,
@@ -109,19 +150,45 @@ namespace Calendarro.Controllers
                 UserId = userId,
                 ProjectId = HttpContext.Session.GetInt32("KanbanId").Value
             };
-            _context.ProjectTasks.Add(task);
+            var dbTask = _mapper.Map<ProjectTasks>(task);
+            _context.ProjectTasks.Add(dbTask);
             await _context.SaveChangesAsync();
+
             return View();
         }
 
-        public List<Kanbans> PrepareCanbans()
+        public List<KanbanWithTasksViewModel> PrepareCanbansWithTasks()
         {
-            var kanbansList = new List<Kanbans>();
-            var currentProject = (Projects)JsonConvert.DeserializeObject(HttpContext.Session.GetString("Project"));
-                    foreach (var kanban in _context.Kanbans)
-                        if (kanban.ProjectId == currentProject.ProjectId)
-                            kanbansList.Add(kanban);
-            return kanbansList;
+            var kanbansWithTasksList = new List<KanbanWithTasksViewModel>();
+            var kanbans = GetKanbans();
+
+            foreach (var kanban in kanbans)
+                kanbansWithTasksList.Add(new KanbanWithTasksViewModel()
+                {
+                    Kanban = kanban,
+                    Tasks = GetKanbanTasks(kanban.KanbanId)
+                });
+
+            return kanbansWithTasksList;
+        }
+
+        public List<ProjectDto> GetProjectsList()
+        {
+            var projectUserRel = _context.ProjectUserRelation.Where(rel => rel.User.UserId == GetCurrentUser().UserId).Select(rel => rel.ProjectId).ToList();
+            var projects = _context.Projects.Where(project => projectUserRel.Contains(project.ProjectId)).ToList();
+            return _mapper.Map<List<ProjectDto>>(projects);
+        }
+
+        public IEnumerable<TaskDto> GetKanbanTasks(int kanbanId)
+        {
+            var tasks = _context.ProjectTasks.Where(task => task.KanbanId == kanbanId).ToList();
+            return _mapper.Map<List<TaskDto>>(tasks);
+        }
+
+        public IEnumerable<KanbanDto> GetKanbans()
+        {
+            var kanbans = _context.Kanbans.Where(k => k.ProjectId == _currentProject.ProjectId).ToList();
+            return _mapper.Map<List<KanbanDto>>(kanbans);
         }
     }
 }
