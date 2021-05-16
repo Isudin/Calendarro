@@ -46,7 +46,7 @@ namespace Calendarro.Controllers
                 _context.ProjectTasks.Add(task);
                 await _context.SaveChangesAsync();
 
-                return View(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
             return View(nameof(Index), addNewTaskViewModel);
         }
