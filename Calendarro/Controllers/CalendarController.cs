@@ -37,7 +37,7 @@ namespace Calendarro.Controllers
                     TaskName = addNewTaskViewModel.Name,
                     FinishDate = addNewTaskViewModel.FinishDate.DateTime,
                     // do zmiany
-                    UserId = 2,
+                    UserId = 1,
                     ProjectId = 1,
                     KanbanId = addNewTaskViewModel.Kanban
                     //ProjectId = HttpContext.Session.GetInt32("KanbanId").Value
