@@ -13,10 +13,17 @@ namespace Calendarro.Controllers
     public class ProjectController : Controller
     {
 
+        private readonly CalendarroDBContext _context;
+
+        public ProjectController(CalendarroDBContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult AddNewProject()
         {
-            return View(new NewProjectViewModel());
+            return View();
         }
 
         [HttpPost]
@@ -25,6 +32,7 @@ namespace Calendarro.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.StatusMessage = "Model błędny!";
                 return View(nameof(AddNewProject), projectModel);
             }
 
@@ -32,20 +40,46 @@ namespace Calendarro.Controllers
 
             if (creator == null)
             {
-                // blad bo nie ma uzytkownika w sesji
+                ViewBag.StatusMessage = "Błąd! Użytkownik nie został zapisany w sesji!";
+                return View();
             }
 
             var options = new JsonSerializerOptions { WriteIndented = true };
 
             var user = JsonSerializer.Deserialize<UserDto>(creator, options);
 
-            //var model = new Projects
-            //{
-            //    CreateDate = DateTime.Now,
-            //    Creator
-            //}
+            var dbUser = _context.CalendarroUsers.FirstOrDefault(t => t.UserId == user.UserId);
 
-            return View();
+            if (dbUser == null)
+            {
+                ViewBag.StatusMessage = "Nie znaleziono użytkownika w bazie";
+                return View();
+            }
+
+            var project = new Projects
+            {
+                CreateDate = DateTime.Now,
+                Description = projectModel.Description,
+                FinishingDate = projectModel.FinishDate,
+                ProjectName = projectModel.ProjectName,
+                Creator = _context.CalendarroUsers.Find(user.UserId)
+            };
+
+            _context.Projects.Add(project);
+            _context.SaveChanges();
+
+            var projectRelation = new ProjectUserRelation
+            {
+                User = dbUser,
+                Project = project
+            };
+
+            _context.ProjectUserRelation.Add(projectRelation);
+            _context.SaveChanges();
+
+            ViewBag.StatusMessage = "Zaakceptowano";
+
+            return RedirectToRoute("/");
         }
     }
 }

@@ -37,3 +37,13 @@
     <a asp-action="Index">Powrót</a>
 </div>
 
+@section Scripts{
+
+    <script>
+        if(@ViewBag.StatusMessage != null)
+        {
+            alert(@ViewBag.StatusMessage);
+        }
+    </script>
+
+}
