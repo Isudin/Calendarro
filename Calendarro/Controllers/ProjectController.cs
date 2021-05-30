@@ -79,7 +79,7 @@ namespace Calendarro.Controllers
 
             ViewBag.StatusMessage = "Zaakceptowano";
 
-            return RedirectToRoute("/");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
