@@ -299,3 +299,7 @@ a.btns {
     height: 535px;
     overflow-y: scroll;
 }
+
+#bck {
+    padding: 10px;
+}
