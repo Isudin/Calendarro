@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Calendarro.Models.Dto;
 using Calendarro.ViewModels;
+using System.Text.Json;
 
 namespace Calendarro.Controllers
 {
@@ -46,12 +47,57 @@ namespace Calendarro.Controllers
 
             //tutaj zmiana Natan
 
+
+            HttpContext.Session.TryGetValue("Project", out var project);
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var proj = System.Text.Json.JsonSerializer.Deserialize<ProjectDto>(project, options);
+            var kanbanList = _context.Kanbans.Where(x => x.Project.ProjectId == proj.ProjectId).ToList();
+
             var model = new MainViewModel
             {
                 KanbanWithTasks = kanbans,
+                AddNewTaskViewModel = new AddNewTaskViewModel()
+                {
+                    KanbanList = kanbanList
+                }
             };
 
             return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddNewTaskAsync(AddNewTaskViewModel addNewTaskViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = _context.CalendarroUsers.FirstOrDefault(x => x.EMail.Equals(User.Identity.Name)).UserId;
+
+                HttpContext.Session.TryGetValue("Project", out var project);
+
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                var proj = System.Text.Json.JsonSerializer.Deserialize<ProjectDto>(project, options);
+
+                var projectId = proj.ProjectId;
+
+                var task = new ProjectTasks()
+                {
+                    CreateDate = DateTime.Now,
+                    TaskName = addNewTaskViewModel.Name,
+                    FinishDate = addNewTaskViewModel.FinishDate.DateTime,
+                    UserId = userId,
+                    ProjectId = projectId,
+                    KanbanId = addNewTaskViewModel.Kanban
+                };
+
+                _context.ProjectTasks.Add(task);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+            //return View(nameof(Index), addNewTaskViewModel);
         }
 
         public IActionResult Privacy()

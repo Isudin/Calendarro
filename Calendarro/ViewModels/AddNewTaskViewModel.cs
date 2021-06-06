@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Calendarro.Models.Database;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,5 +20,6 @@ namespace Calendarro.ViewModels
         [Display(Name = "Kanban")]
         [Required(ErrorMessage = "Task musi być przypisany do kanbanu.")]
         public int Kanban { get; set; }
+        public IEnumerable<Kanbans> KanbanList { get; set; }
     }
 }
