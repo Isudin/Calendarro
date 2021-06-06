@@ -1,10 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Calendarro.Test
 {
@@ -20,27 +18,51 @@ namespace Calendarro.Test
         }
 
         [Test]
-        public void LoggedUser_HasCookie_ReturnTrue()
+        public void LoggedUser_StatusCode200_ReturnTrue()
         {
-            _httpClient.BaseAddress = new Uri("http://localhost:5000/Identity/Account/Login?ReturnUrl=%2F");
+            _httpClient.BaseAddress = 
+                new Uri("http://localhost:5000/Identity/Account/Login?ReturnUrl=%2F");
             _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var login = "test@op.pl";
-            var password = "Admin1@";
+            // PROSZE UTWORZYC KONTO TESTOWE Z PODANYMI DANYMI!
+            // BEDZIE TO KONTO DO SPRAWDZENIA POPRAWNOSCI FUNKCJONALNOSCI LOGOWANIA
+            var login = "test@mail.com";
+            var password = "Root1!";
+
+            if (string.IsNullOrEmpty(login) | string.IsNullOrEmpty(password))
+            {
+                Assert.IsTrue(false, "Utworz wymagane testowe konto!!!.");
+            }
 
             var formContent = new FormUrlEncodedContent(new[]
             {
-             new KeyValuePair<string, string>("grant_type", "password"),
-             new KeyValuePair<string, string>("username", login),
-             new KeyValuePair<string, string>("password", password),
+                 new KeyValuePair<string, string>("Input.Email", login),
+                 new KeyValuePair<string, string>("Input.Password", password),
             });
 
-            //var responseMessage =  _httpClient.PostAsync("/Token", formContent);
-            
-            //var responseJson =  responseMessage.Content.ReadAsStringAsync().Result;
+            var result = false;
+            HttpResponseMessage responseMessage = null;
 
-            Assert.IsFalse(false, "1 should not be prime");
+            try
+            {
+                responseMessage = _httpClient.PostAsync("", formContent).Result;
+            }
+            catch (Exception)
+            {
+                Assert.IsTrue(result, "Problem z wyslaniem requesta do servera.");
+            }
+
+            if (responseMessage == null)
+            {
+                Assert.IsTrue(result, "Nie otrzymano zadnej zwrotki z servera");
+            }
+
+            if (responseMessage?.StatusCode == HttpStatusCode.OK)
+            {
+                result = true;
+            }
+
+            Assert.IsTrue(result, "Status code nie jest 200! Blad.");
         }
     }
 }
