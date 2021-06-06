@@ -68,6 +68,7 @@ namespace Calendarro.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewTaskAsync(AddNewTaskViewModel addNewTaskViewModel)
         {
             if (ModelState.IsValid)

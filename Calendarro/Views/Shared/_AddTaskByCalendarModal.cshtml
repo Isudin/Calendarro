@@ -29,7 +29,7 @@
 
                     <div class="form-group w-100 text-center">
                         <h5><label asp-for="Name" class="col-form-label"></label></h5>
-                        <input asp-for="Name" type="text" class="form-control" id="task-name">
+                        <input asp-for="Name" type="text" class="form-control" id="taskname" oninput="validateInputForm()"/>
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
@@ -54,7 +54,7 @@
 
                     <div class="modal-footer ">
                         <div class="form-group w-100 text-center">
-                            <button type="submit" class="btn btn-primary">Dodaj zadanie</button>
+                            <button type="submit" class="btn btn-primary" id="submitNewTask" disabled>Dodaj zadanie</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
                         </div>
                     </div>
@@ -65,3 +65,6 @@
     </div>
 </div>
 
+@section Scripts{
+   
+}
