@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendarro", "Calendarro\Calendarro.csproj", "{270E816A-4749-4CF3-AFAA-6E91AC8B6282}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendarro.Test", "Calendarro.Test\Calendarro.Test.csproj", "{E0B86C7C-0AF6-4406-BA1F-90CA0B571F3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendarro.Test", "Calendarro.Test\Calendarro.Test.csproj", "{E0B86C7C-0AF6-4406-BA1F-90CA0B571F3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
