@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Calendarro.Areas.Identity.Pages.Account
 {
+    [IgnoreAntiforgeryToken]
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
@@ -40,6 +41,7 @@ namespace Calendarro.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
+        
         public class InputModel
         {
             [Required]
@@ -71,6 +73,7 @@ namespace Calendarro.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
