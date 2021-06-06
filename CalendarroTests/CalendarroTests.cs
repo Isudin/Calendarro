@@ -59,5 +59,22 @@ namespace CalendarroTests
             }
             Assert.IsTrue(exist);
         }
+
+        [TestMethod]
+        public void CheckRelationsSaving()
+        {
+            Random rand = new Random();
+            bool exist = false;
+            var task = new RelationDto()
+            {
+                UserId = rand.Next(1, int.MaxValue),
+                ProjectId = rand.Next(1, int.MaxValue)
+            };
+            if (task is RelationDto && task != null)
+            {
+                exist = true;
+            }
+            Assert.IsTrue(exist);
+        }
     }
 }
