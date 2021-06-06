@@ -1,4 +1,4 @@
-﻿function generateTrippleView() {
+﻿function generateTrippleView(projId) {
 
     var today = new Date();
 
@@ -12,6 +12,6 @@
 
         var calendarDate = year + '-' + month + '-' + '01';
 
-        generateMonth(index, calendarDate, "http://localhost:5000/calendar/getalltasks?project=1")
+        generateMonth(index, calendarDate, `http://localhost:5000/calendar/getalltasks?project=${projId}`)
     }
 }

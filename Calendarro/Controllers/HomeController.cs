@@ -63,6 +63,8 @@ namespace Calendarro.Controllers
                 }
             };
 
+            ViewBag.ProjectIdForGenerateTasks = proj.ProjectId;
+
             return View(model);
         }
 

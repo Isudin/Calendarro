@@ -1,4 +1,4 @@
-﻿function generateHexagonalView() {
+﻿function generateHexagonalView(projId) {
 
     var today = new Date();
 
@@ -14,6 +14,6 @@
 
         var calId = index + 3;
 
-        generateMonth(calId, calendarDate, "http://localhost:5000/calendar/getalltasks?project=1");
+        generateMonth(calId, calendarDate, `http://localhost:5000/calendar/getalltasks?project=${projId}`);
     }
 }

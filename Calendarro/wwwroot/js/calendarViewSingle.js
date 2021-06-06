@@ -1,4 +1,5 @@
-﻿function generateSingle() {
+﻿function generateSingle(projId) {
+
     var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
         timeZone: 'local',
         themeSystem: 'bootstrap',
@@ -23,7 +24,7 @@
             $("#AddEvent").modal('show');
         },
         dayMaxEvents: false,
-        events: 'http://localhost:5000/calendar/getalltasks?project=1'
+        events: `http://localhost:5000/calendar/getalltasks?project=${projId}`
     });
 
     calendar.render();
