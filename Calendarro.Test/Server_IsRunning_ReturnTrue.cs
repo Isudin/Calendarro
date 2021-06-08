@@ -6,7 +6,7 @@ using System.Net.Http;
 namespace Calendarro.Test
 {
     [TestFixture]
-    class CheckIfServerIsRunning
+    class Server_IsRunning_ReturnTrue
     {
         private HttpClient _httpClient;
 
