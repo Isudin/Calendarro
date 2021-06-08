@@ -7,7 +7,7 @@ using System.Net.Http;
 namespace Calendarro.Test
 {
     [TestFixture]
-    class LoggedUserIdentity
+    class User_WhenCanLog_ReturnTrue
     {
         private HttpClient _httpClient;
 
