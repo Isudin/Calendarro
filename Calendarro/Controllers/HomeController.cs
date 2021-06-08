@@ -43,7 +43,7 @@ namespace Calendarro.Controllers
         {
             SaveUserToSession();
             _projectsList = GetProjectsList();
-            var kanbans = PrepareCanbansWithTasks();
+            var kanbans = PrepareKanbansWithTasks();
 
             //tutaj zmiana Natan
 
@@ -206,7 +206,7 @@ namespace Calendarro.Controllers
             return View();
         }
 
-        public List<KanbanWithTasksViewModel> PrepareCanbansWithTasks()
+        public List<KanbanWithTasksViewModel> PrepareKanbansWithTasks()
         {
             var kanbansWithTasksList = new List<KanbanWithTasksViewModel>();
             var kanbans = GetKanbans();
