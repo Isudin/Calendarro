@@ -1,65 +1,66 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Rejestracja";
+    ViewData["Title"] = "";
 }
 
 <head>
     <link href="~/css/site.css" rel="stylesheet" type="text/css" />
 </head>
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="container">
-    <div class="pb-3">
-        <div class="window">
+<div class="row d-flex justify-content-center text-center">
+    <div class="col-md-4 bg-secondary rounded">
+        <section>
             <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <div class="label">Stwórz nowe konto</div>
+                <br />
+                <h3>Stwórz nowe konto</h3>
+                <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
+                <div class="form-group justify-content-center text-center">
                     @*<label asp-for="Input.Email"></label>*@
                     <input asp-for="Input.Email" class="form-control" placeholder="Podaj Email" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.FirstName"></label>
-                    <input asp-for="Input.FirstName" class="form-control" />
+                    @*<label asp-for="Input.FirstName"></label>*@
+                    <input asp-for="Input.FirstName" class="form-control" placeholder="Podaj Imię" />
                     <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.LastName"></label>
-                    <input asp-for="Input.LastName" class="form-control" />
+                    @*<label asp-for="Input.LastName"></label>*@
+                    <input asp-for="Input.LastName" class="form-control" placeholder="Podaj Nazwisko" />
                     <span asp-validation-for="Input.LastName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.City"></label>
-                    <input asp-for="Input.City" class="form-control" />
+                    @*<label asp-for="Input.City"></label>*@
+                    <input asp-for="Input.City" class="form-control" placeholder="Podaj Miasto" />
                     <span asp-validation-for="Input.City" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.Street"></label>
-                    <input asp-for="Input.Street" class="form-control" />
+                    @*<label asp-for="Input.Street"></label>*@
+                    <input asp-for="Input.Street" class="form-control" placeholder="Podaj Ulicę" />
                     <span asp-validation-for="Input.Street" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.HouseNumber"></label>
-                    <input asp-for="Input.HouseNumber" class="form-control" />
+                    @*<label asp-for="Input.HouseNumber"></label>*@
+                    <input asp-for="Input.HouseNumber" class="form-control" placeholder="Podaj Numer domu" />
                     <span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     @*<label asp-for="Input.Password"></label>*@
-                    <input asp-for="Input.Password" class="form-control" placeholder="Podaj hasło" />
+                    <input asp-for="Input.Password" class="form-control" placeholder="Podaj Hasło" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     @*<label asp-for="Input.ConfirmPassword"></label>*@
-                    <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Potwierdź hasło" />
+                    <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Potwierdź Hasło" />
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Register</button>
+                <div class="form-group d-flex justify-content-center">
+                    <button type="submit" class="btn btn-dark btn-lg">Zarejestruj</button>
+                </div>
             </form>
-        </div>
+        </section>
     </div>
 </div>
 

@@ -13,14 +13,21 @@
                 @foreach (var kanban in Model.KanbanWithTasks)
                 {
                     <div class="sqr">
-                        <div class="title">
-                            @kanban.Kanban.Name
-                        </div>
-                        <div class="dropdown" style="float: right;">
-                            <button class="kanbandropbtn">...</button>
-                            <div class="kanbandrop-content">
-                                <a href="#">+</a>
-                                <a href="#">-</a>
+                        <div class="kanban-top row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-8">
+                                <div class="title">
+                                    @kanban.Kanban.Name
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="dropdown">
+                                    <button class="kanbandropbtn">...</button>
+                                    <div class="kanbandrop-content">
+                                        <a href="#">Dodaj zadanie</a>
+                                        <a href="#">Usuń kanban</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="content">
@@ -34,16 +41,9 @@
                     </div>
                 }
             </div>
+            <partial name="_AddTaskByCalendarModal" model="Model.AddNewTaskViewModel" />
         </div>
         <div class="column" style="border-left: 5px solid dimgray">
-            @*<div class="calendar_buttons">
-                    <div id="button1"><a href="#" class="btns">1</a></div>
-                    <div id="button2"><a href="#" class="btns">3</a></div>
-                    <div id="button3"><a href="#" class="btns">6</a></div>
-                </div>
-                <div class="container">
-                    <div id="calendar"></div>
-                </div>*@
 
             <div class="container">
                 <button class="btn btn-outline-primary" id="calendaView-1">1</button>
@@ -75,17 +75,22 @@
 
 
 @section Scripts{
+
     <link href="~/lib/fullcalendar/main.min.css" rel="stylesheet" />
     <script src="~/lib/fullcalendar/main.min.js"></script>
 
     <script src="~/js/calendarMonthGenerator.js"></script>
 
-    <script src="~/js/calendarViewSingle.js"></script>
+    <script src="~/js/calendarViewSingle.js">
+    </script>
     <script src="~/js/calendarViewTripple.js"></script>
     <script src="~/js/calendarViewHexagonal.js"></script>
 
-    <script src="~/js/buttonViewChanger.js"></script>
+    <script type="text/javascript">
+        _projId = @ViewBag.ProjectIdForGenerateTasks;
+   </script>
 
+    <script src="~/js/buttonViewChanger.js"></script>
 
     <script>
         (function () {
@@ -107,5 +112,16 @@
         })();
     </script>
 
-
+    <script>
+        function validateInputForm() {
+            var el = document.getElementById('taskname').value;
+            if (el.length > 4) {
+                var btn = document.getElementById('submitNewTask');
+                btn.disabled = false;
+            } else {
+                var btn = document.getElementById('submitNewTask');
+                btn.disabled = true;
+            }
+        }
+    </script>
 }

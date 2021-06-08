@@ -9,34 +9,39 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <button class="button" onclick="alert('Zostanie dodany nowy projekt')">Add new project</button>
-
-        <div class="dropdown">
-            <button class="dropbtn">
-                @if (HomeController._currentProject.ProjectName != null)
-                {
-                    @HomeController._currentProject.ProjectName
-                }
-                else
-                {
-                    <p>Brak projektów</p>
-                }
-            </button>
-            <div class="dropdown-content">
-                @if (HomeController._projectsList.Count > 0)
-                {
-                    @foreach (var project in HomeController._projectsList)
+        <li>
+            <form asp-action="AddNewProject" asp-controller="Project" method="get">
+                <button class="button">Add new project</button>
+            </form>
+        </li>
+        <li>
+            <div class="dropdown">
+                <button class="dropbtn">
+                    @if (HomeController._currentProject.ProjectName != null)
                     {
-                        <a href="#">@project.ProjectName</a>
+                        @HomeController._currentProject.ProjectName
                     }
-                }
-                else
-                {
-                    <a href="#">Brak projektów</a>
-                }
+                    else
+                    {
+                        <p>Brak projektów</p>
+                    }
+                </button>
+                <div class="dropdown-content">
+                    @if (HomeController._projectsList.Count > 0)
+                    {
+                        @foreach (var project in HomeController._projectsList)
+                        {
+                            <a href="#">@project.ProjectName</a>
+                        }
+                    }
+                    else
+                    {
+                        <a href="#">Brak projektów</a>
+                    }
 
+                </div>
             </div>
-        </div>
+        </li>
 
         <li class="nav-item">
             <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
