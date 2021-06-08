@@ -8,23 +8,34 @@ using Moq;
 namespace Calendarro.Test
 {
     [TestClass]
-    class Mapper_MapsCorrectly_ReturnTrue
+    public class Mapper_MapsCorrectly_ReturnTrue
     {
         private readonly IMapper _mapper;
 
-        public Mapper_MapsCorrectly_ReturnTrue(IMapper mapper)
+        public Mapper_MapsCorrectly_ReturnTrue()
         {
-            //if (_mapper == null)
-            //{
-            //    var mappingConfig = new MapperConfiguration(mc =>
-            //    {
-            //        mc.AddProfile(new Automap());
-            //    });
-            //    IMapper mapper = mappingConfig.CreateMapper();
-            //    _mapper = mapper;
-            //}
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new Automap());
+            });
 
+            IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
+        }
+
+        [TestMethod]
+        public void TestAutoMapperProfiles()
+        {
+            //Arrange
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new Automap());
+            });
+
+            //Act
+
+            //Assert
+            mappingConfig.AssertConfigurationIsValid();
         }
 
         [TestMethod]
