@@ -40,6 +40,7 @@ namespace CalendarroTests
             {
                 exist = true;
             }
+
             Assert.IsTrue(exist);
         }
 
