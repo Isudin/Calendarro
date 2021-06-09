@@ -249,5 +249,19 @@ namespace Calendarro.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveKanban(int kanbanId)
+        {
+            var kanban = _context.Kanbans.Where(x => x.KanbanId == kanbanId).FirstOrDefault();
+            var tasks = _context.ProjectTasks.Where(x => x.KanbanId == kanbanId).ToList();
+
+            foreach (var task in tasks)
+                _context.ProjectTasks.Remove(task);
+
+            _context.Kanbans.Remove(kanban);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
