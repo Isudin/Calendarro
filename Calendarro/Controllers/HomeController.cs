@@ -241,7 +241,7 @@ namespace Calendarro.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveTaskFromKanban(int taskId)
+        public async Task<IActionResult> RemoveTaskFromKanbanAsync(int taskId)
         {
             var task = _context.ProjectTasks.Where(x => x.ProjectTaskId == taskId).FirstOrDefault();
 
@@ -251,7 +251,7 @@ namespace Calendarro.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveKanban(int kanbanId)
+        public async Task<IActionResult> RemoveKanbanAsync(int kanbanId)
         {
             var kanban = _context.Kanbans.Where(x => x.KanbanId == kanbanId).FirstOrDefault();
             var tasks = _context.ProjectTasks.Where(x => x.KanbanId == kanbanId).ToList();
