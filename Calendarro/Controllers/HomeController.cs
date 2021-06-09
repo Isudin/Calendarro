@@ -239,5 +239,15 @@ namespace Calendarro.Controllers
             var kanbans = _context.Kanbans.Where(k => k.ProjectId == _currentProject.ProjectId).ToList();
             return _mapper.Map<List<KanbanDto>>(kanbans);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveTaskFromKanban(int taskId)
+        {
+            var task = _context.ProjectTasks.Where(x => x.ProjectTaskId == taskId).FirstOrDefault();
+
+            _context.ProjectTasks.Remove(task);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }

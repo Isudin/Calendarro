@@ -147,7 +147,7 @@ body {
     margin-right: 5px;
 }
 
-    /*.sqr:after {
+/*.sqr:after {
         content: "";
         display: block;
         padding-bottom: 100%;
@@ -282,20 +282,20 @@ a.btns {
     z-index: 1;
 }
 
-    .kanbandrop-content a {
-        color: black;
-        padding: 5px 7px;
-        text-decoration: none;
-        display: block;
-    }
+.kanbandrop-content a {
+    color: black;
+    padding: 5px 7px;
+    text-decoration: none;
+    display: block;
+}
 
-        .kanbandrop-content a:hover {
-            background-color: grey;
-        }
+.kanbandrop-content a:hover {
+    background-color: grey;
+}
 
-    .dropdown:hover .kanbandrop-content {
-        display: block;
-    }
+.dropdown:hover .kanbandrop-content {
+    display: block;
+}
 
 .boards {
     height: 535px;
@@ -309,4 +309,12 @@ a.btns {
 .content {
     overflow: auto;
     overflow-x: hidden;
+}
+
+#deleteTask {
+    text-align: right;
+    padding: 1px;
+    height: 15px;
+    width: 15px;
+    position: center;
 }
