@@ -266,6 +266,7 @@ a.btns {
     border: none;
     font-weight: bold;
     margin-right: 10px;
+    min-width: 160px;
 }
 
 .kanbandropbtn {

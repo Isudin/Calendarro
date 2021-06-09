@@ -8,17 +8,17 @@ namespace Calendarro.ViewModels
 {
     public class AddNewTaskViewModel
     {
-        [DisplayName("Nazwa zadania")]
-        [Required(ErrorMessage = "Task musi mieć nazwę.")]
+        [DisplayName("New tasks")]
+        [Required(ErrorMessage = "Task name required.")]
         [StringLength(50, MinimumLength = 2)]
         public string Name { get; set; }
 
-        [Display(Name = "Dzień")]
-        [Required(ErrorMessage = "Task musi mieć datę.")]
+        [Display(Name = "Date")]
+        [Required(ErrorMessage = "Task date required.")]
         public DateTimeOffset FinishDate { get; set; }
 
         [Display(Name = "Kanban")]
-        [Required(ErrorMessage = "Task musi być przypisany do kanbanu.")]
+        [Required(ErrorMessage = "Task kanban required.")]
         public int Kanban { get; set; }
         public IEnumerable<Kanbans> KanbanList { get; set; }
     }
