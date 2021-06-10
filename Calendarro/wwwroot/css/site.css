@@ -305,7 +305,7 @@ a.btns {
 }
 
 .boards {
-    height: 535px;
+    /*height: 535px;*/ height: 100%;
     overflow-y: scroll;
 }
 
