@@ -68,7 +68,7 @@ namespace Calendarro.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> NoProjectFound()
+        public IActionResult NoProjectFound()
         {
             return View();
         }
@@ -187,16 +187,28 @@ namespace Calendarro.Controllers
 
         public async Task<IActionResult> AddKanbanAsync(string name)
         {
+            HttpContext.Session.TryGetValue("Project", out var project);
+
+            if (project == null)
+            {
+                return BadRequest();
+            }
+
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var proj = System.Text.Json.JsonSerializer.Deserialize<ProjectDto>(project, options);
+
             var kanban = new KanbanDto()
             {
                 Name = name,
-                ProjectId = HttpContext.Session.GetInt32("ProjectId").Value
+                ProjectId = proj.ProjectId
             };
+
             var dbKanban = _mapper.Map<Kanbans>(kanban);
+
             _context.Kanbans.Add(dbKanban);
             await _context.SaveChangesAsync();
 
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> AddTaskAsync(int userId, string name, DateTime finishDate)

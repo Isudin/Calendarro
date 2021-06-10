@@ -1,6 +1,6 @@
-﻿@model Calendarro.Models.Dto.KanbanDto
+﻿@*@model Calendarro.Models.Dto.KanbanDto*@
 
-<div class="modal" tabindex="-1" role="dialog">
+<div class="modal fade" tabindex="-1" role="dialog" id="AddKanban" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header w-100 text-center">
@@ -9,25 +9,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <form role="form" method="post" class="needs-validation" asp-controller="Home" asp-action="AddKanban" id="modalForm">
+                <div class="modal-body">
 
-
-                <form role="form" method="post" class="needs-validation" asp-controller="Home" asp-action="AddKanbanAsync" id="modalForm">
                     <div class="modal-body w-100 text-center">
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                     </div>
-                </form>
 
-                <div class="form-group w-100 text-center">
-                    <h5><label class="col-form-label">Kanban name</label></h5>
-                    <input asp-for="Name" type="text" class="form-control" id="kanbanName" oninput="validateInputForm()" />
+                    <div class="form-group w-100 text-center">
+                        <h5><label class="col-form-label">Kanban name</label></h5>
+                        <input name="name" type="text" class="form-control" id="kanbanName" oninput="validateInputForm()" />
+                    </div>
+
+                </div>
+                <div class="modal-footer ">
+                    <button type="submit" class="btn btn-primary text-center">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
