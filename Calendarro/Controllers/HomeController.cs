@@ -43,7 +43,7 @@ namespace Calendarro.Controllers
         {
             SaveUserToSession();
             _projectsList = GetProjectsList();
-            var kanbans = PrepareCanbansWithTasks();
+            var kanbans = PrepareKanbansWithTasks();
 
             //tutaj zmiana Natan
 
@@ -206,7 +206,7 @@ namespace Calendarro.Controllers
             return View();
         }
 
-        public List<KanbanWithTasksViewModel> PrepareCanbansWithTasks()
+        public List<KanbanWithTasksViewModel> PrepareKanbansWithTasks()
         {
             var kanbansWithTasksList = new List<KanbanWithTasksViewModel>();
             var kanbans = GetKanbans();
@@ -238,6 +238,30 @@ namespace Calendarro.Controllers
         {
             var kanbans = _context.Kanbans.Where(k => k.ProjectId == _currentProject.ProjectId).ToList();
             return _mapper.Map<List<KanbanDto>>(kanbans);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveTaskFromKanbanAsync(int taskId)
+        {
+            var task = _context.ProjectTasks.Where(x => x.ProjectTaskId == taskId).FirstOrDefault();
+
+            _context.ProjectTasks.Remove(task);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveKanbanAsync(int kanbanId)
+        {
+            var kanban = _context.Kanbans.Where(x => x.KanbanId == kanbanId).FirstOrDefault();
+            var tasks = _context.ProjectTasks.Where(x => x.KanbanId == kanbanId).ToList();
+
+            foreach (var task in tasks)
+                _context.ProjectTasks.Remove(task);
+
+            _context.Kanbans.Remove(kanban);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
     }
 }

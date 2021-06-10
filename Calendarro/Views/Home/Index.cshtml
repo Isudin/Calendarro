@@ -24,8 +24,12 @@
                                 <div class="dropdown">
                                     <button class="kanbandropbtn">...</button>
                                     <div class="kanbandrop-content">
-                                        <a href="#">Dodaj zadanie</a>
-                                        <a href="#">Usuń kanban</a>
+                                        @*<a href="#">Dodaj zadanie</a>*@
+
+                                        <form method="post" asp-action="RemoveKanban" asp-controller="Home">
+                                            <input type="hidden" name="kanbanId" value="@kanban.Kanban.KanbanId" />
+                                            <button class="btn" type="submit" id="deleteKanban">Usuń kanban</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -33,8 +37,15 @@
                         <div class="content">
                             @foreach (var task in kanban.Tasks)
                             {
-                                <div>
-                                    @task.TaskName
+                                <div class="row" style="margin-left: 5px;">
+                                    <form method="post" asp-action="RemoveTaskFromKanban" asp-controller="Home">
+                                        <input type="hidden" name="taskId" value="@task.TaskId" />
+                                        @*<button class="w-100 bg-transparent" type="submit" id="deleteTask">-</button>*@
+                                        <button type="submit" class="close" aria-label="Close" id="deleteTask">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </form>
+                                    <label>@task.TaskName</label>
                                 </div>
                             }
                         </div>
@@ -45,14 +56,14 @@
         </div>
         <div class="column" style="border-left: 5px solid dimgray">
 
-            <div class="container">
-                <button class="btn btn-outline-primary" id="calendaView-1">1</button>
-                <button class="btn btn-outline-primary" id="calendaView-3">3</button>
-                <button class="btn btn-outline-primary" id="calendaView-6">6</button>
-            </div>
 
             <div class="container" id="calendarContainer">
 
+                <div>
+                    <button class="btn btn-outline-primary" id="calendaView-1">1</button>
+                    <button class="btn btn-outline-primary" id="calendaView-3">3</button>
+                    <button class="btn btn-outline-primary" id="calendaView-6">6</button>
+                </div>
                 <div id="singleView">
                     <partial name="_CalendarView1" />
                 </div>
@@ -88,7 +99,7 @@
 
     <script type="text/javascript">
         _projId = @ViewBag.ProjectIdForGenerateTasks;
-   </script>
+    </script>
 
     <script src="~/js/buttonViewChanger.js"></script>
 

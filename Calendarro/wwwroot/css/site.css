@@ -147,7 +147,7 @@ body {
     margin-right: 5px;
 }
 
-    /*.sqr:after {
+/*.sqr:after {
         content: "";
         display: block;
         padding-bottom: 100%;
@@ -206,6 +206,8 @@ a.btns {
     font-size: 16px;
     border: none;
     font-weight: bold;
+    padding: 10px;
+    min-width: 160px;
 }
 
 /* The container <div> - needed to position the dropdown content */
@@ -223,20 +225,24 @@ a.btns {
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    width: inherit;
+    border-radius: 10px;
+    border: 1px solid dimgray;
 }
 
     /* Links inside the dropdown */
-    .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-    }
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
 
-        /* Change color of dropdown links on hover */
-        .dropdown-content a:hover {
-            background-color: grey;
-        }
+    /* Change color of dropdown links on hover */
+    .dropdown-content a:hover {
+        background-color: grey;
+        border-radius: 10px;
+    }
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
@@ -260,6 +266,7 @@ a.btns {
     border: none;
     font-weight: bold;
     margin-right: 10px;
+    min-width: 160px;
 }
 
 .kanbandropbtn {
@@ -282,20 +289,20 @@ a.btns {
     z-index: 1;
 }
 
-    .kanbandrop-content a {
-        color: black;
-        padding: 5px 7px;
-        text-decoration: none;
-        display: block;
-    }
+.kanbandrop-content a {
+    color: black;
+    padding: 5px 7px;
+    text-decoration: none;
+    display: block;
+}
 
-        .kanbandrop-content a:hover {
-            background-color: grey;
-        }
+.kanbandrop-content a:hover {
+    background-color: grey;
+}
 
-    .dropdown:hover .kanbandrop-content {
-        display: block;
-    }
+.dropdown:hover .kanbandrop-content {
+    display: block;
+}
 
 .boards {
     height: 535px;
@@ -309,4 +316,12 @@ a.btns {
 .content {
     overflow: auto;
     overflow-x: hidden;
+}
+
+#deleteTask {
+    text-align: right;
+    padding: 1px;
+    position: center;
+    font-size: 1.2rem;
+    color: red;
 }
