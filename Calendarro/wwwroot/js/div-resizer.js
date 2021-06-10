@@ -9,7 +9,7 @@ function ResizeContentContainer2() {
     var navbarHeight = document.getElementById('navbarHolder').clientHeight;
     var footerHeight = document.getElementById('footerHolder').clientHeight;
 
-    var calculate = ((windowHeight - (navbarHeight + footerHeight + 150)));
+    var calculate = ((windowHeight - (navbarHeight + footerHeight + 50)));
 
     var el = document.getElementById('responsive-div');
     el.style.height = (calculate) + "px";
