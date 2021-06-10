@@ -18,12 +18,12 @@
 
                     <div class="form-group w-100 text-center">
                         <h5><label class="col-form-label">Kanban name</label></h5>
-                        <input name="name" type="text" class="form-control" id="kanbanName" oninput="validateInputForm()" />
+                        <input name="name" type="text" class="form-control" id="kanbanName" oninput="validateKanbanForm() " />
                     </div>
 
                 </div>
                 <div class="modal-footer ">
-                    <button type="submit" class="btn btn-primary text-center">Save</button>
+                    <button type="submit" class="btn btn-primary text-center" id="submitNewKanban" disabled>Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
 

@@ -150,4 +150,19 @@
             }
         }
     </script>
+
+    <script>
+        var validateKanbanForm = () => {
+            var element = document.getElementById('kanbanName').value;
+
+            var btn = document.getElementById('submitNewKanban');
+
+            if (element.length > 4) {
+                btn.disabled = false;
+            }
+            else {
+                btn.disabled = true;
+            }
+        }
+    </script>
 }
