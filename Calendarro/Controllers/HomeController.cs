@@ -1,24 +1,20 @@
-﻿using System;
+﻿using AutoMapper;
+using Calendarro.Areas.Identity.Data;
+using Calendarro.Models;
+using Calendarro.Models.Database;
+using Calendarro.Models.Dto;
+using Calendarro.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Calendarro.Models;
-using Microsoft.AspNetCore.Authorization;
-using Calendarro.Models.Database;
-using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
-using Calendarro.Areas.Identity.Data;
-using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using Calendarro.Models.Dto;
-using Calendarro.ViewModels;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Calendarro.Controllers
 {
@@ -45,10 +41,14 @@ namespace Calendarro.Controllers
             _projectsList = GetProjectsList();
             var kanbans = PrepareKanbansWithTasks();
 
-            //tutaj zmiana Natan
-
 
             HttpContext.Session.TryGetValue("Project", out var project);
+
+            if (project == null)
+            {
+                return RedirectToAction(nameof(NoProjectFound));
+            }
+
 
             var options = new JsonSerializerOptions { WriteIndented = true };
             var proj = System.Text.Json.JsonSerializer.Deserialize<ProjectDto>(project, options);
@@ -68,6 +68,10 @@ namespace Calendarro.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> NoProjectFound()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -127,7 +131,13 @@ namespace Calendarro.Controllers
         private void SaveProjectToSession(CalendarroUsers dbUser)
         {
             //Najprawdopodobniej tylko testowe dodawanie projektu do sesji
-            var projectUserRel = _context.ProjectUserRelation.First(rel => rel.User == dbUser);
+            var projectUserRel = _context.ProjectUserRelation.FirstOrDefault(rel => rel.User == dbUser);
+
+            if (projectUserRel == null)
+            {
+                return;
+            }
+
             var project = _context.Projects.First(project => project.ProjectId == projectUserRel.ProjectId);
             var mappedProject = _currentProject = _mapper.Map<ProjectDto>(project);
             var serializedProject = JsonConvert.SerializeObject(mappedProject);
@@ -211,6 +221,11 @@ namespace Calendarro.Controllers
             var kanbansWithTasksList = new List<KanbanWithTasksViewModel>();
             var kanbans = GetKanbans();
 
+            if (kanbans == null)
+            {
+                return null;
+            }
+
             foreach (var kanban in kanbans)
                 kanbansWithTasksList.Add(new KanbanWithTasksViewModel()
                 {
@@ -236,7 +251,13 @@ namespace Calendarro.Controllers
 
         public IEnumerable<KanbanDto> GetKanbans()
         {
+            if (_currentProject?.ProjectId == null)
+            {
+                return null;
+            }
+
             var kanbans = _context.Kanbans.Where(k => k.ProjectId == _currentProject.ProjectId).ToList();
+
             return _mapper.Map<List<KanbanDto>>(kanbans);
         }
 
