@@ -9,6 +9,7 @@ namespace Calendarro.Areas.Identity
         {
             builder.ConfigureServices((context, services) =>
             {
+
             });
         }
     }

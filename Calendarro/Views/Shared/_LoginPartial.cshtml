@@ -10,7 +10,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li>
-            @if (HomeController._currentProject.ProjectName != null)
+            @if (HomeController._currentProject?.ProjectName != null)
             {
                 <form asp-action="AddNewKanban" asp-controller="Home" method="get">
                     <button class="button">Add new kanban</button>
@@ -25,7 +25,7 @@
         <li>
             <div class="dropdown">
                 <button class="dropbtn">
-                    @if (HomeController._currentProject.ProjectName != null)
+                    @if (HomeController._currentProject?.ProjectName != null)
                     {
                         @HomeController._currentProject.ProjectName
                     }
@@ -35,7 +35,7 @@
                     }
                 </button>
                 <div class="dropdown-content">
-                    @if (HomeController._projectsList.Count > 0)
+                    @if (HomeController._projectsList?.Count > 0)
                     {
                         @foreach (var project in HomeController._projectsList)
                         {
