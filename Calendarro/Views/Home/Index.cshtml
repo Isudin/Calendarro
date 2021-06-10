@@ -10,11 +10,12 @@
     <div class="row" id="responsive-div">
         <div class="column" style="border-right: 5px solid dimgray">
             <div class="boards">
-                @if (Model.KanbanList == null || Model.KanbanList.Count() == 0)
+                @if (Model.KanbanWithTasks?.Count() == 0)
                 {
                     <partial name="_NoKanban" />
                 }
                 else
+                {
                     @foreach (var kanban in Model.KanbanWithTasks)
                     {
                         <div class="sqr">
@@ -56,6 +57,7 @@
                             </div>
                         </div>
                     }
+                }
             </div>
             <partial name="_AddTaskByCalendarModal" model="Model.AddNewTaskViewModel" />
         </div>
@@ -131,7 +133,15 @@
     <script>
         function validateInputForm() {
             var el = document.getElementById('taskname').value;
-            if (el.length > 4) {
+            var el2 = document.getElementById('kanban-name').value;
+
+            let a = true;
+
+            if (el2 == '') {
+                a = false;
+            }
+
+            if (el.length > 4 && a) {
                 var btn = document.getElementById('submitNewTask');
                 btn.disabled = false;
             } else {

@@ -31,7 +31,7 @@
 
                     <div class="form-group">
                         <h5><label asp-for="Kanban" class="col-form-label"></label></h5>
-                        <select asp-for="Kanban" asp-items="@(new SelectList(Model.KanbanList, "KanbanId","Name"))">
+                        <select asp-for="Kanban" asp-items="@(new SelectList(Model.KanbanList, "KanbanId","Name"))" id="kanban-name">
                         </select>
                     </div>
 
