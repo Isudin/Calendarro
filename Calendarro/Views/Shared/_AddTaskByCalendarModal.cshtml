@@ -4,19 +4,15 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content ">
             <div class="modal-header w-100 text-center">
-                <h5 class="modal-title  w-100 text-center">Dodaj nowe zadanie</h5>
+                <h5 class="modal-title  w-100 text-center">Add new task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            @* TODO frontend poprawić tutaj *@
             <form role="form" method="post" class="needs-validation" asp-controller="Home" asp-action="AddNewTask" id="modalForm">
                 <div class="modal-body w-100 text-center">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-
-
-                    @* Poprawic walidaje danych *@
 
 
 
@@ -35,27 +31,16 @@
 
                     <div class="form-group">
                         <h5><label asp-for="Kanban" class="col-form-label"></label></h5>
-                        <select asp-for="Kanban" asp-items="@(new SelectList(Model.KanbanList, "KanbanId","Name"))">
+                        <select asp-for="Kanban" asp-items="@(new SelectList(Model.KanbanList, "KanbanId","Name"))" id="kanban-name">
                         </select>
                     </div>
-
-                    @*<div class="form-group">
-                            <h5><label asp-for="Kanban" class="col-form-label"></label></h5>
-                            <input asp-for="Kanban" type="text" class="form-control" />
-                        </div>*@
-
-
-                    @* Te dane beda zapisane w sesji *@
-                    @* WIEC TUTAJ DO POPRAWY JAK BEDZIE GOTOWA SESJA *@
-                    <input name="UserId" type="hidden" value="1" class="form-control" />
-                    <input name="ProjectId" type="hidden" value="1" class="form-control" />
 
 
 
                     <div class="modal-footer ">
                         <div class="form-group w-100 text-center">
-                            <button type="submit" class="btn btn-primary" id="submitNewTask" disabled>Dodaj zadanie</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                            <button type="submit" class="btn btn-primary" id="submitNewTask" disabled>Add task</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Delete</button>
                         </div>
                     </div>
 
