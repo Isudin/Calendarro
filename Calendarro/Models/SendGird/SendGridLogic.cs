@@ -14,9 +14,8 @@ namespace Calendarro.Models.SendGird
         //}
 
         static async Task Execute(string receciver)
-        {
-            var apiKey = Environment.GetEnvironmentVariable("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");
-            var client = new SendGridClient(apiKey);
+        {          
+            var client = new SendGridClient("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");
             var from = new EmailAddress("raneckimateusz@gmail.com", "CalendarroTeam");
             var subject = "Sending with SendGrid is Fun";
             var to = new EmailAddress(receciver, "New User");
