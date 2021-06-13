@@ -83,10 +83,16 @@ namespace Calendarro.Controllers
 
                 HttpContext.Session.TryGetValue("Project", out var project);
 
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                var proj = System.Text.Json.JsonSerializer.Deserialize<ProjectDto>(project, options);
+                if (project == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
 
+                var options = new JsonSerializerOptions { WriteIndented = true };
+
+                var proj = System.Text.Json.JsonSerializer.Deserialize<ProjectDto>(project, options);
                 var projectId = proj.ProjectId;
+
 
                 var task = new ProjectTasks()
                 {
@@ -101,10 +107,10 @@ namespace Calendarro.Controllers
                 _context.ProjectTasks.Add(task);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { projectId = proj.ProjectId });
             }
+
             return RedirectToAction(nameof(Index));
-            //return View(nameof(Index), addNewTaskViewModel);
         }
 
         public IActionResult Privacy()

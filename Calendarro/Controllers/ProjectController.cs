@@ -1,18 +1,15 @@
 ﻿using Calendarro.Models.Database;
+using Calendarro.Models.Dto;
 using Calendarro.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Text.Json;
-using Calendarro.Models.Dto;
 
 namespace Calendarro.Controllers
 {
     public class ProjectController : Controller
     {
-
         private readonly CalendarroDBContext _context;
 
         public ProjectController(CalendarroDBContext context)
@@ -79,7 +76,7 @@ namespace Calendarro.Controllers
 
             ViewBag.StatusMessage = "Zaakceptowano";
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new { projectId = project.ProjectId });
         }
     }
 }
