@@ -43,7 +43,7 @@
                             <div class="content">
                                 @foreach (var task in kanban.Tasks)
                                 {
-                                    <div class="row" style="margin-left: 5px;">
+                                    <div class="row taskRow">
                                         <form method="post" asp-action="RemoveTaskFromKanban" asp-controller="Home">
                                             <input type="hidden" name="taskId" value="@task.TaskId" />
                                             @*<button class="w-100 bg-transparent" type="submit" id="deleteTask">-</button>*@
@@ -51,7 +51,10 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </form>
-                                        <label>@task.TaskName</label>
+
+                                        <button class="taskButton">
+                                            @task.TaskName
+                                        </button>
                                     </div>
                                 }
                             </div>
