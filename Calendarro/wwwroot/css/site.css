@@ -325,3 +325,9 @@ a.btns {
     font-size: 1.2rem;
     color: red;
 }
+
+.calendarBox {
+    height: auto;
+    max-height: 720px;
+    overflow: auto;
+}
