@@ -36,6 +36,16 @@ namespace Calendarro.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "First Name")]
+            [StringLength(30,ErrorMessage = "Given first name is incorrect", MinimumLength = 2)]
+            public string FirstName { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Last Name")]
+            [StringLength(50, ErrorMessage = "Given last name is incorrect", MinimumLength = 2)]
+            public string LastName{ get; set; }
         }
 
         private async Task LoadAsync(CalendarroUser user)
