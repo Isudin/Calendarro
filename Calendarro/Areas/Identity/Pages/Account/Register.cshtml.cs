@@ -1,5 +1,6 @@
 ﻿using Calendarro.Areas.Identity.Data;
 using Calendarro.Models.Database;
+using Calendarro.Models.SendGird;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -26,19 +27,22 @@ namespace Calendarro.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly CalendarroDBContext _calendarroContext;
+        //private readonly SendGridLogic _sendGridLogic;
 
         public RegisterModel(
             UserManager<CalendarroUser> userManager,
             SignInManager<CalendarroUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            CalendarroDBContext context)
+            CalendarroDBContext context
+            /*,SendGridLogic sendGridLogic*/)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _calendarroContext = context;
+            //_sendGridLogic = sendGridLogic;
         }
 
         [BindProperty]
@@ -140,6 +144,7 @@ namespace Calendarro.Areas.Identity.Pages.Account
 
                     await _calendarroContext.CalendarroUsers.AddAsync(calUser);
                     await _calendarroContext.SaveChangesAsync();
+                    //_sendGridLogic.SendEmail(Input.Email);
                 }
 
                 if (result.Succeeded)

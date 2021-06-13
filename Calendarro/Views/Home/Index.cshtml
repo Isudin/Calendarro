@@ -7,49 +7,56 @@
 </head>
 
 <body>
-    <div class="row">
+    <div class="row" id="responsive-div">
         <div class="column" style="border-right: 5px solid dimgray">
             <div class="boards">
-                @foreach (var kanban in Model.KanbanWithTasks)
+                @if (Model.KanbanWithTasks?.Count() == 0)
                 {
-                    <div class="sqr">
-                        <div class="kanban-top row">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-8">
-                                <div class="title">
-                                    @kanban.Kanban.Name
+                    <partial name="_NoKanban" />
+                }
+                else
+                {
+                    @foreach (var kanban in Model.KanbanWithTasks)
+                    {
+                        <div class="sqr">
+                            <div class="kanban-top row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-8">
+                                    <div class="title">
+                                        @kanban.Kanban.Name
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="dropdown">
-                                    <button class="kanbandropbtn">...</button>
-                                    <div class="kanbandrop-content">
-                                        @*<a href="#">Dodaj zadanie</a>*@
+                                <div class="col-sm-2">
+                                    <div class="dropdown">
+                                        <button class="kanbandropbtn">...</button>
+                                        <div class="kanbandrop-content">
+                                            @*<a href="#">Dodaj zadanie</a>*@
 
-                                        <form method="post" asp-action="RemoveKanban" asp-controller="Home">
-                                            <input type="hidden" name="kanbanId" value="@kanban.Kanban.KanbanId" />
-                                            <button class="btn" type="submit" id="deleteKanban">Usuń kanban</button>
-                                        </form>
+                                            <form method="post" asp-action="RemoveKanban" asp-controller="Home">
+                                                <input type="hidden" name="kanbanId" value="@kanban.Kanban.KanbanId" />
+                                                <button class="btn" type="submit" id="deleteKanban">Usuń kanban</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="content">
+                                @foreach (var task in kanban.Tasks)
+                                {
+                                    <div class="row" style="margin-left: 5px;">
+                                        <form method="post" asp-action="RemoveTaskFromKanban" asp-controller="Home">
+                                            <input type="hidden" name="taskId" value="@task.TaskId" />
+                                            @*<button class="w-100 bg-transparent" type="submit" id="deleteTask">-</button>*@
+                                            <button type="submit" class="close" aria-label="Close" id="deleteTask">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </form>
+                                        <label>@task.TaskName</label>
+                                    </div>
+                                }
+                            </div>
                         </div>
-                        <div class="content">
-                            @foreach (var task in kanban.Tasks)
-                            {
-                                <div class="row" style="margin-left: 5px;">
-                                    <form method="post" asp-action="RemoveTaskFromKanban" asp-controller="Home">
-                                        <input type="hidden" name="taskId" value="@task.TaskId" />
-                                        @*<button class="w-100 bg-transparent" type="submit" id="deleteTask">-</button>*@
-                                        <button type="submit" class="close" aria-label="Close" id="deleteTask">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </form>
-                                    <label>@task.TaskName</label>
-                                </div>
-                            }
-                        </div>
-                    </div>
+                    }
                 }
             </div>
             <partial name="_AddTaskByCalendarModal" model="Model.AddNewTaskViewModel" />
@@ -126,11 +133,34 @@
     <script>
         function validateInputForm() {
             var el = document.getElementById('taskname').value;
-            if (el.length > 4) {
+            var el2 = document.getElementById('kanban-name').value;
+
+            let a = true;
+
+            if (el2 == '') {
+                a = false;
+            }
+
+            if (el.length > 4 && a) {
                 var btn = document.getElementById('submitNewTask');
                 btn.disabled = false;
             } else {
                 var btn = document.getElementById('submitNewTask');
+                btn.disabled = true;
+            }
+        }
+    </script>
+
+    <script>
+        var validateKanbanForm = () => {
+            var element = document.getElementById('kanbanName').value;
+
+            var btn = document.getElementById('submitNewKanban');
+
+            if (element.length > 4) {
+                btn.disabled = false;
+            }
+            else {
                 btn.disabled = true;
             }
         }
