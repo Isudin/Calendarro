@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Calendarro.Models.Mapper;
+using Calendarro.Models.SendGird;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Calendarro
 {
@@ -35,6 +37,7 @@ namespace Calendarro
             services.AddRazorPages();
 
             services.AddAutoMapper(c => c.AddProfile<Automap>(), typeof(Startup));
+            services.AddTransient<IEmailSender, SendGridLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

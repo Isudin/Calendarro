@@ -27,7 +27,7 @@ namespace Calendarro.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly CalendarroDBContext _calendarroContext;
-        //private readonly SendGridLogic _sendGridLogic;
+        
 
         public RegisterModel(
             UserManager<CalendarroUser> userManager,
@@ -35,14 +35,14 @@ namespace Calendarro.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             CalendarroDBContext context
-            /*,SendGridLogic sendGridLogic*/)
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _calendarroContext = context;
-            //_sendGridLogic = sendGridLogic;
+            
         }
 
         [BindProperty]
@@ -144,7 +144,7 @@ namespace Calendarro.Areas.Identity.Pages.Account
 
                     await _calendarroContext.CalendarroUsers.AddAsync(calUser);
                     await _calendarroContext.SaveChangesAsync();
-                    //_sendGridLogic.SendEmail(Input.Email);
+                    await _emailSender.SendEmailAsync(Input.Email, "Welcome", "To the jungle");
                 }
 
                 if (result.Succeeded)
