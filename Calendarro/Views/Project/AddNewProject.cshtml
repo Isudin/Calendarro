@@ -34,7 +34,7 @@
 </div>
 
 <div>
-    <a asp-action="Index" id="bck" class="bg-secondary rounded">Powrót</a>
+    <a asp-action="Index" asp-controller="Home" asp-route-projectId="@Context.Request.Query["projectId"].ToString()" id="bck" class="bg-secondary rounded">Powrót</a>
 </div>
 
 @section Scripts{
