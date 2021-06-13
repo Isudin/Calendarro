@@ -35,9 +35,9 @@ namespace Calendarro.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(int? projectId = null)
         {
-            SaveUserToSession();
+            SaveUserToSession(projectId);
             _projectsList = GetProjectsList();
             var kanbans = PrepareKanbansWithTasks();
 
@@ -118,17 +118,17 @@ namespace Calendarro.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private void SaveUserToSession()
+        private void SaveUserToSession(int? projectId = null)
         {
             var user = _userManager.GetUserAsync(User).Result;
             var dbUser = _context.CalendarroUsers.Single(u => u.Token == user.Id);
             var mappedUser = _mapper.Map<UserDto>(dbUser);
             var serializedUser = JsonConvert.SerializeObject(mappedUser);
             HttpContext.Session.SetString("User", serializedUser);
-            SaveProjectToSession(dbUser);
+            SaveProjectToSession(dbUser, projectId);
         }
 
-        private void SaveProjectToSession(CalendarroUsers dbUser)
+        private void SaveProjectToSession(CalendarroUsers dbUser, int? projectId = null)
         {
             //Najprawdopodobniej tylko testowe dodawanie projektu do sesji
             var projectUserRel = _context.ProjectUserRelation.FirstOrDefault(rel => rel.User == dbUser);
@@ -138,10 +138,35 @@ namespace Calendarro.Controllers
                 return;
             }
 
-            var project = _context.Projects.First(project => project.ProjectId == projectUserRel.ProjectId);
-            var mappedProject = _currentProject = _mapper.Map<ProjectDto>(project);
-            var serializedProject = JsonConvert.SerializeObject(mappedProject);
-            HttpContext.Session.SetString("Project", serializedProject);
+            Projects project;
+
+            if (projectId != null)
+            {
+                project = _context.Projects
+                    .Where(p => p.ProjectId == projectId)
+                    .FirstOrDefault();
+            }
+            else
+            {
+                project = _context.Projects.FirstOrDefault(project => project.ProjectId == projectUserRel.ProjectId);
+            }
+
+            var allRelations = _context.ProjectUserRelation
+                .Where(x => x.User == dbUser)
+                .Select(a => a.ProjectId)
+                .ToList();
+
+            if (project == null)
+            {
+                return;
+            }
+
+            if (allRelations.Contains(project.ProjectId))
+            {
+                var mappedProject = _currentProject = _mapper.Map<ProjectDto>(project);
+                var serializedProject = JsonConvert.SerializeObject(mappedProject);
+                HttpContext.Session.SetString("Project", serializedProject);
+            }
         }
 
         public void GetCurrentProject()
@@ -208,7 +233,9 @@ namespace Calendarro.Controllers
             _context.Kanbans.Add(dbKanban);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            int.TryParse(HttpContext.Request.Query["projectId"].ToString(), out var projid);
+
+            return RedirectToAction(nameof(Index), new { projectId = projid });
         }
 
         public async Task<IActionResult> AddTaskAsync(int userId, string name, DateTime finishDate)

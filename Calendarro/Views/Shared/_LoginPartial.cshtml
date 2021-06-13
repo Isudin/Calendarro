@@ -39,7 +39,7 @@
                         {
                             @foreach (var project in HomeController._projectsList)
                             {
-                                <a href="#">@project.ProjectName</a>
+                                <a asp-controller="Home" asp-action="Index" asp-route-projectId="@project.ProjectId">@project.ProjectName</a>
                             }
                         }
                         else
