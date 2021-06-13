@@ -327,7 +327,10 @@ namespace Calendarro.Controllers
 
             _context.Kanbans.Remove(kanban);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+
+            int.TryParse(HttpContext.Request.Query["projectId"].ToString(), out var projid);
+
+            return RedirectToAction("Index", new { projectId = projid });
         }
     }
 }
