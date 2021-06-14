@@ -362,3 +362,11 @@ a.btns {
     .taskRow:hover {
         background-color: dimgray;
     }
+
+.nav-link {
+    color: white;
+}
+
+.text-danger {
+    float: left;
+}

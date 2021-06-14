@@ -313,7 +313,10 @@ namespace Calendarro.Controllers
 
             _context.ProjectTasks.Remove(task);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+
+            int.TryParse(HttpContext.Request.Query["projectId"].ToString(), out var projectId);
+
+            return RedirectToAction("Index", new { projectId = projectId });
         }
 
         [HttpPost]
