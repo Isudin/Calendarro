@@ -1,8 +1,8 @@
 ﻿@model Calendarro.ViewModels.AddNewTaskViewModel
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="AddEvent">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content ">
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="AddTaskToKanban">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
             <div class="modal-header w-100 text-center">
                 <h5 class="modal-title  w-100 text-center">Add new task</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -14,32 +14,28 @@
                 <div class="modal-body w-100 text-center">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
+                    <input type="text" asp-for="Kanban" id="kanbanId"/>
+
 
 
                     <div class="form-group w-100 text-center">
                         <h5><label asp-for="FinishDate" class="col-form-label"></label></h5>
-                        <input type="text" readonly asp-for="FinishDate" id="finish-date" class="form-control" />
+                        <input type="text" asp-for="FinishDate" id="finish-date" value="@DateTime.Today"/>
                     </div>
 
 
 
                     <div class="form-group w-100 text-center">
                         <h5><label asp-for="Name" class="col-form-label"></label></h5>
-                        <input asp-for="Name" type="text" class="form-control" id="taskname" oninput="validateInputForm()"/>
+                        <input asp-for="Name" type="text" class="form-control" id="taskname" oninput="validateInputForm()" />
                         <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <h5><label asp-for="Kanban" class="col-form-label"></label></h5>
-                        <select asp-for="Kanban" asp-items="@(new SelectList(Model.KanbanList, "KanbanId","Name"))" id="kanban-name">
-                        </select>
                     </div>
 
 
 
                     <div class="modal-footer ">
                         <div class="form-group w-100 text-center">
-                            <button type="submit" class="btn btn-primary" id="submitNewTask" disabled>Add task</button>
+                            <button type="submit" class="btn btn-primary" id="submitNewTask">Add task</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>

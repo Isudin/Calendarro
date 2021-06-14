@@ -10,7 +10,7 @@
                 </button>
             </div>
             <form role="form" method="post" class="needs-validation" asp-controller="Home" asp-action="MoveTaskToKanban" id="modalForm">
-                <div class="form-group">
+                <div class="form-group w-100 text-center">
                     <h5><label asp-for="Kanban" class="col-form-label"></label></h5>
                     <input type="hidden" name="projectId" value="@Context.Request.Query["projectId"]"/>
                     <input type="text" name="taskId" id="taskId" hidden/>
