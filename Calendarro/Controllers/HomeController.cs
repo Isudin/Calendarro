@@ -332,5 +332,28 @@ namespace Calendarro.Controllers
 
             return RedirectToAction("Index", new { projectId = projid });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MoveTaskToKanban(int toKanbanId, int taskId)
+        {
+            var task = _context.ProjectTasks.Where(x => x.ProjectTaskId == taskId).FirstOrDefault();
+            //var task = _context.ProjectTasks.Where(x => x.ProjectTaskId == int.Parse(taskId)).FirstOrDefault();
+            var fromKanban = _context.Kanbans.Where(x => x.KanbanId == task.KanbanId).FirstOrDefault();
+            var toKanban = _context.Kanbans.Where(x => x.KanbanId == toKanbanId).FirstOrDefault();
+
+            //fromKanban.ProjectTasks.Remove(task);
+            //toKanban.ProjectTasks.Add(task);
+            task.KanbanId = toKanban.KanbanId;
+
+            //_context.Kanbans.Update(fromKanban);
+            //_context.Kanbans.Update(toKanban);
+            _context.ProjectTasks.Update(task);
+
+            await _context.SaveChangesAsync();
+
+            int.TryParse(HttpContext.Request.Query["projectId"].ToString(), out var projectId);
+
+            return RedirectToAction("Index", new { projectId = projectId });
+        }
     }
 }
